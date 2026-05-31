@@ -5,4 +5,12 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>PlaymobilManager</name>
   <description>Colección de playmobil</description>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>com.mysql</groupId>
+    	<artifactId>mysql-connector-j</artifactId>
+    	<version>8.3.0</version>
+  	</dependency>
+  </dependencies>
 </project>
