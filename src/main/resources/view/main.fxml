@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.MainController">
+
+    <center>
+        <TableView fx:id="tablaPlaymobil">
+        
+        	<columns>
+        		<TableColumn fx:id="colReferencia" text="Referencia"/>
+                <TableColumn fx:id="colNombre" text="Nombre"/>
+                <TableColumn fx:id="colCategoria" text="Categoría"/>
+                <TableColumn fx:id="colPrecio" text="Precio Compra"/>
+                <TableColumn fx:id="colValor" text="Valor Actual"/>
+            </columns>
+            
+        </TableView> 
+    </center>
+
+</BorderPane>
