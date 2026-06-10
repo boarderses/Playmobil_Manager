@@ -20,8 +20,12 @@
             				onAction="#guardarPlaymobil"/>
 
     				<Button text="Modificar"
-            		onAction="#modificarPlaymobil"/>
-				</HBox>        
+            				onAction="#modificarPlaymobil"/>
+            		
+            		<Button text="Eliminar"
+            				onAction="#eliminarPlaymobil"/>
+				</HBox>
+				        
     	</VBox>
     </top>
 

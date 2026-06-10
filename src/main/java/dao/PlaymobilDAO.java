@@ -65,6 +65,22 @@ public class PlaymobilDAO {
 	        return false;
 	    }
 	}
+	public boolean eliminar(int id) {
+
+	    String sql = "DELETE FROM playmobil WHERE id = ?";
+
+	    try (Connection conn = ConexionDB.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setInt(1, id);
+
+	        return stmt.executeUpdate() > 0;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 	public List<Playmobil> obtenerTodos() {
 
 	    List<Playmobil> lista = new ArrayList<>();

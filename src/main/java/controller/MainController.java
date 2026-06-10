@@ -125,5 +125,24 @@ public class MainController {
 
         cargarTabla();
     }
+    @FXML
+    private void eliminarPlaymobil() {
+
+        if (playmobilSeleccionado == null) {
+            return;
+        }
+
+        dao.eliminar(playmobilSeleccionado.getId());
+
+        playmobilSeleccionado = null;
+
+        txtReferencia.clear();
+        txtNombre.clear();
+        txtCategoria.clear();
+        txtPrecioCompra.clear();
+        txtValorActual.clear();
+
+        cargarTabla();
+    } 
 }
 
