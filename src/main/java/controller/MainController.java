@@ -7,6 +7,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Playmobil;
+import util.Alertas;
 
 public class MainController {
 
@@ -86,7 +87,11 @@ public class MainController {
             boolean insertado = dao.insertar(p);
 
             if (insertado) {
-
+            	
+            	Alertas.info("Guardado", "Playmobil guardado correctamente");}
+            	else {
+            		Alertas.error("Error", "No se pudo guardar el Playmobil");
+            	}
                 cargarTabla();
 
                 txtReferencia.clear();
@@ -95,7 +100,7 @@ public class MainController {
                 txtPrecioCompra.clear();
                 txtValorActual.clear();
             }
-        } catch (Exception e) {
+         catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -122,16 +127,34 @@ public class MainController {
                 Double.parseDouble(txtValorActual.getText()));
 
         dao.actualizar(playmobilSeleccionado);
+        
+        boolean actualizado =
+                dao.actualizar(playmobilSeleccionado);
+
+        if (actualizado) {
+
+            Alertas.info("Modificado","Playmobil actualizado correctamente");
 
         cargarTabla();
+        }
     }
     @FXML
     private void eliminarPlaymobil() {
 
         if (playmobilSeleccionado == null) {
+        	
+        	Alertas.error("Selección requerida", "Devbes seleccionar un Playmobil");
             return;
         }
+        
+        boolean confirmar = Alertas.confirmar(
+                "Eliminar",
+                "¿Seguro que deseas eliminar este Playmobil?");
 
+        if (!confirmar) {
+            return;
+        }
+        
         dao.eliminar(playmobilSeleccionado.getId());
 
         playmobilSeleccionado = null;
@@ -143,6 +166,7 @@ public class MainController {
         txtValorActual.clear();
 
         cargarTabla();
+        Alertas.info("Eliminado", "Playmobil eliminado correctamente");
     } 
 }
 
