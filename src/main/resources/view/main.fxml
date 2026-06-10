@@ -5,6 +5,20 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="controller.MainController">
+            
+    <top>
+    	<VBox spacing="5">
+    	
+    		<TextField fx:id="txtReferencia" promptText="Referencia"/>
+            <TextField fx:id="txtNombre" promptText="Nombre"/>
+            <TextField fx:id="txtCategoria" promptText="Categoría"/>
+            <TextField fx:id="txtPrecioCompra" promptText="Precio compra"/>
+            <TextField fx:id="txtValorActual" promptText="Valor actual"/>
+            
+            <Button text="Guardar"
+                    onAction="#guardarPlaymobil"/>
+    	</VBox>
+    </top>
 
     <center>
         <TableView fx:id="tablaPlaymobil">

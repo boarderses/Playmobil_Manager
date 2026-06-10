@@ -4,6 +4,7 @@ import dao.PlaymobilDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Playmobil;
 
@@ -17,6 +18,12 @@ public class MainController {
     @FXML private TableColumn<Playmobil, String> colCategoria;
     @FXML private TableColumn<Playmobil, Double> colPrecio;
     @FXML private TableColumn<Playmobil, Double> colValor;
+    
+    @FXML private TextField txtReferencia;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtCategoria;
+    @FXML private TextField txtPrecioCompra;
+    @FXML private TextField txtValorActual;
 
     private PlaymobilDAO dao = new PlaymobilDAO();
 
@@ -29,7 +36,47 @@ public class MainController {
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioCompra"));
         colValor.setCellValueFactory(new PropertyValueFactory<>("valorActual"));
 
+        cargarTabla();
+    }
+    private void cargarTabla() {
+
+        tablaPlaymobil.getItems().clear();
         tablaPlaymobil.getItems().addAll(dao.obtenerTodos());
+    }
+    @FXML
+    private void guardarPlaymobil() {
+
+        try {
+            Playmobil p = new Playmobil();
+
+            p.setReferencia(txtReferencia.getText());
+            p.setNombre(txtNombre.getText());
+            p.setCategoria(txtCategoria.getText());
+
+            p.setPrecioCompra(
+                    Double.parseDouble(txtPrecioCompra.getText()));
+
+            p.setValorActual(
+                    Double.parseDouble(txtValorActual.getText()));
+
+            p.setObservaciones("");
+            p.setRutaImagen("");
+
+            boolean insertado = dao.insertar(p);
+
+            if (insertado) {
+
+                cargarTabla();
+
+                txtReferencia.clear();
+                txtNombre.clear();
+                txtCategoria.clear();
+                txtPrecioCompra.clear();
+                txtValorActual.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
