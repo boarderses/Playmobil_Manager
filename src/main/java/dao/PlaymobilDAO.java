@@ -35,6 +35,36 @@ public class PlaymobilDAO {
             return false;
         }
     }
+	
+	public boolean actualizar(Playmobil p) {
+
+	    String sql = """
+	        UPDATE playmobil
+	        SET referencia=?,
+	            nombre=?,
+	            categoria=?,
+	            precio_compra=?,
+	            valor_actual=?
+	        WHERE id=?
+	        """;
+
+	    try (Connection conn = ConexionDB.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setString(1, p.getReferencia());
+	        stmt.setString(2, p.getNombre());
+	        stmt.setString(3, p.getCategoria());
+	        stmt.setDouble(4, p.getPrecioCompra());
+	        stmt.setDouble(5, p.getValorActual());
+	        stmt.setInt(6, p.getId());
+
+	        return stmt.executeUpdate() > 0;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 	public List<Playmobil> obtenerTodos() {
 
 	    List<Playmobil> lista = new ArrayList<>();

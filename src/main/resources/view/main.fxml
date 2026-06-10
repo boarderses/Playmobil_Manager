@@ -14,9 +14,14 @@
             <TextField fx:id="txtCategoria" promptText="Categoría"/>
             <TextField fx:id="txtPrecioCompra" promptText="Precio compra"/>
             <TextField fx:id="txtValorActual" promptText="Valor actual"/>
-            
-            <Button text="Guardar"
-                    onAction="#guardarPlaymobil"/>
+                      
+            	<HBox spacing="10">
+    				<Button text="Guardar"
+            				onAction="#guardarPlaymobil"/>
+
+    				<Button text="Modificar"
+            		onAction="#modificarPlaymobil"/>
+				</HBox>        
     	</VBox>
     </top>
 

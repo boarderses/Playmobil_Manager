@@ -24,7 +24,8 @@ public class MainController {
     @FXML private TextField txtCategoria;
     @FXML private TextField txtPrecioCompra;
     @FXML private TextField txtValorActual;
-
+    
+    @FXML private Playmobil playmobilSeleccionado;
     private PlaymobilDAO dao = new PlaymobilDAO();
 
     @FXML
@@ -37,6 +38,26 @@ public class MainController {
         colValor.setCellValueFactory(new PropertyValueFactory<>("valorActual"));
 
         cargarTabla();
+        
+        tablaPlaymobil.getSelectionModel()
+        .selectedItemProperty()
+        .addListener((obs, anterior, seleccionado) -> {
+
+            if (seleccionado != null) {
+
+                playmobilSeleccionado = seleccionado;
+
+                txtReferencia.setText(seleccionado.getReferencia());
+                txtNombre.setText(seleccionado.getNombre());
+                txtCategoria.setText(seleccionado.getCategoria());
+
+                txtPrecioCompra.setText(
+                        String.valueOf(seleccionado.getPrecioCompra()));
+
+                txtValorActual.setText(
+                        String.valueOf(seleccionado.getValorActual()));
+            }
+        });
     }
     private void cargarTabla() {
 
@@ -77,6 +98,32 @@ public class MainController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    private void modificarPlaymobil() {
+
+        if (playmobilSeleccionado == null) {
+            return;
+        }
+
+        playmobilSeleccionado.setReferencia(
+                txtReferencia.getText());
+
+        playmobilSeleccionado.setNombre(
+                txtNombre.getText());
+
+        playmobilSeleccionado.setCategoria(
+                txtCategoria.getText());
+
+        playmobilSeleccionado.setPrecioCompra(
+                Double.parseDouble(txtPrecioCompra.getText()));
+
+        playmobilSeleccionado.setValorActual(
+                Double.parseDouble(txtValorActual.getText()));
+
+        dao.actualizar(playmobilSeleccionado);
+
+        cargarTabla();
     }
 }
 
