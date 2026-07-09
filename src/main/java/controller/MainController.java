@@ -2,10 +2,9 @@ package controller;
 
 import dao.PlaymobilDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import model.Playmobil;
 import util.Alertas;
 
@@ -25,8 +24,17 @@ public class MainController {
     @FXML private TextField txtCategoria;
     @FXML private TextField txtPrecioCompra;
     @FXML private TextField txtValorActual;
+    @FXML private TextField txtBuscar;
+    @FXML private TextArea txtObservaciones;
+    @FXML private ImageView imgPlaymobil;
     
-    @FXML private Playmobil playmobilSeleccionado;
+    @FXML private Button btnGuardar;
+    @FXML private Button btnModificar;
+    @FXML private Button btnEliminar;
+    @FXML private Button btnSeleccionarImagen;
+    
+    
+    private Playmobil playmobilSeleccionado;
     private PlaymobilDAO dao = new PlaymobilDAO();
 
     @FXML
@@ -57,6 +65,8 @@ public class MainController {
 
                 txtValorActual.setText(
                         String.valueOf(seleccionado.getValorActual()));
+                txtObservaciones.setText(
+                		seleccionado.getObservaciones());
             }
         });
     }
@@ -81,7 +91,7 @@ public class MainController {
             p.setValorActual(
                     Double.parseDouble(txtValorActual.getText()));
 
-            p.setObservaciones("");
+            p.setObservaciones(txtObservaciones.getText());
             p.setRutaImagen("");
 
             boolean insertado = dao.insertar(p);
@@ -94,11 +104,7 @@ public class MainController {
             	}
                 cargarTabla();
 
-                txtReferencia.clear();
-                txtNombre.clear();
-                txtCategoria.clear();
-                txtPrecioCompra.clear();
-                txtValorActual.clear();
+                limpiarFormularioPlaymobil();
             }
          catch (Exception e) {
             e.printStackTrace();
@@ -125,9 +131,10 @@ public class MainController {
 
         playmobilSeleccionado.setValorActual(
                 Double.parseDouble(txtValorActual.getText()));
-
-        dao.actualizar(playmobilSeleccionado);
         
+        playmobilSeleccionado.setObservaciones(
+                txtObservaciones.getText());
+       
         boolean actualizado =
                 dao.actualizar(playmobilSeleccionado);
 
@@ -143,7 +150,7 @@ public class MainController {
 
         if (playmobilSeleccionado == null) {
         	
-        	Alertas.error("Selección requerida", "Devbes seleccionar un Playmobil");
+        	Alertas.error("Selección requerida", "Debes seleccionar un Playmobil");
             return;
         }
         
@@ -157,16 +164,21 @@ public class MainController {
         
         dao.eliminar(playmobilSeleccionado.getId());
 
-        playmobilSeleccionado = null;
+        limpiarFormularioPlaymobil();
+
+        cargarTabla();
+        Alertas.info("Eliminado", "Playmobil eliminado correctamente");
+    }
+    private void limpiarFormularioPlaymobil() {
 
         txtReferencia.clear();
         txtNombre.clear();
         txtCategoria.clear();
         txtPrecioCompra.clear();
         txtValorActual.clear();
+        txtObservaciones.clear();
 
-        cargarTabla();
-        Alertas.info("Eliminado", "Playmobil eliminado correctamente");
-    } 
+        playmobilSeleccionado = null;
+    }
 }
 
