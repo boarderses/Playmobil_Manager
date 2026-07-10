@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import model.Playmobil;
 import util.Alertas;
+import util.CategoriasPlaymobil;
 import validation.PlaymobilValidator;
 
 public class MainController {
@@ -26,7 +27,7 @@ public class MainController {
     
     @FXML private TextField txtReferencia;
     @FXML private TextField txtNombre;
-    @FXML private TextField txtCategoria;
+    @FXML private ComboBox<String> cmbCategoria;
     @FXML private TextField txtPrecioCompra;
     @FXML private TextField txtValorActual;
     @FXML private TextField txtBuscar;
@@ -64,7 +65,7 @@ public class MainController {
 
                 txtReferencia.setText(seleccionado.getReferencia());
                 txtNombre.setText(seleccionado.getNombre());
-                txtCategoria.setText(seleccionado.getCategoria());
+                cmbCategoria.setValue( seleccionado.getCategoria());               
 
                 txtPrecioCompra.setText(
                         String.valueOf(seleccionado.getPrecioCompra()));
@@ -91,7 +92,12 @@ public class MainController {
                 	}
             }
         });
-    }
+        txtBuscar.textProperty().addListener(
+                (obs, antiguo, nuevo) -> buscarPlaymobil());
+        
+        cmbCategoria.getItems().addAll(
+                CategoriasPlaymobil.CATEGORIAS);
+    }  
     private void cargarTabla() {
 
         tablaPlaymobil.getItems().clear();
@@ -105,7 +111,7 @@ public class MainController {
 
             p.setReferencia(txtReferencia.getText());
             p.setNombre(txtNombre.getText());
-            p.setCategoria(txtCategoria.getText());
+            p.setCategoria(cmbCategoria.getValue());
 
             p.setPrecioCompra(
                     Double.parseDouble(txtPrecioCompra.getText()));
@@ -133,15 +139,19 @@ public class MainController {
             boolean insertado = dao.insertar(p);
 
             if (insertado) {
-            	
-            	Alertas.info("Guardado", "Playmobil guardado correctamente");}
-            	else {
-            		Alertas.error("Error", "No se pudo guardar el Playmobil");
-            	}
-                cargarTabla();
 
+                Alertas.info("Guardado",
+                        "Playmobil guardado correctamente");
+
+                cargarTabla();
                 limpiarFormularioPlaymobil();
-            }
+
+            } else {
+
+                Alertas.error("Error",
+                        "No se pudo guardar el Playmobil");
+            }            
+        }
         catch (NumberFormatException e) {
             Alertas.error(
                     "Formato incorrecto",
@@ -168,7 +178,7 @@ public class MainController {
                 txtNombre.getText());
 
         playmobilSeleccionado.setCategoria(
-                txtCategoria.getText());
+                cmbCategoria.getValue());
 
         playmobilSeleccionado.setPrecioCompra(
                 Double.parseDouble(txtPrecioCompra.getText()));
@@ -219,7 +229,7 @@ public class MainController {
 
         txtReferencia.clear();
         txtNombre.clear();
-        txtCategoria.clear();
+        cmbCategoria.getSelectionModel().clearSelection();
         txtPrecioCompra.clear();
         txtValorActual.clear();
         txtObservaciones.clear();
@@ -250,6 +260,12 @@ public class MainController {
             Image imagen = new Image(archivo.toURI().toString());
             imgPlaymobil.setImage(imagen);
         }
-    }   
+    }
+    private void buscarPlaymobil() {
+
+        String texto = txtBuscar.getText();
+
+        tablaPlaymobil.getItems().setAll(dao.buscar(texto));
+    }
 }
 

@@ -133,4 +133,46 @@ public class PlaymobilDAO {
 	    }
 	    return false;
 	}
+	public List<Playmobil> buscar(String texto) {
+
+	    List<Playmobil> lista = new ArrayList<>();
+
+	    String sql = """
+	        SELECT *
+	        FROM playmobil
+	        WHERE referencia LIKE ?
+	           OR nombre LIKE ?	        
+	        ORDER BY referencia
+	        """;
+
+	    try (Connection con = ConexionDB.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, "%" + texto + "%");
+	        ps.setString(2, "%" + texto + "%");
+
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+
+	            Playmobil p = new Playmobil();
+
+	            p.setId(rs.getInt("id"));
+	            p.setReferencia(rs.getString("referencia"));
+	            p.setNombre(rs.getString("nombre"));
+	            p.setCategoria(rs.getString("categoria"));
+	            p.setPrecioCompra(rs.getDouble("precio_compra"));
+	            p.setValorActual(rs.getDouble("valor_actual"));
+	            p.setObservaciones(rs.getString("observaciones"));
+	            p.setRutaImagen(rs.getString("ruta_imagen"));
+
+	            lista.add(p);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return lista;
+	}
 }

@@ -59,6 +59,12 @@ Versión 0.5
 
 --- 
 
+Versión 0.6
+
+- Sustitución del campo de categoría por un ComboBox.
+- Centralización de las categorías en la clase CategoriasPlaymobil.
+- Mejoras de organización del controlador.
+
 Sprint 2 - Calidad
 
 - Validación del formulario
