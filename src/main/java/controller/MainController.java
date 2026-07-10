@@ -1,10 +1,14 @@
 package controller;
 
+import java.io.File;
+
 import dao.PlaymobilDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import model.Playmobil;
 import util.Alertas;
 
@@ -36,6 +40,7 @@ public class MainController {
     
     private Playmobil playmobilSeleccionado;
     private PlaymobilDAO dao = new PlaymobilDAO();
+    private String rutaImagenSeleccionada;
 
     @FXML
     public void initialize() {
@@ -67,6 +72,22 @@ public class MainController {
                         String.valueOf(seleccionado.getValorActual()));
                 txtObservaciones.setText(
                 		seleccionado.getObservaciones());
+                
+                if (seleccionado.getRutaImagen() != null &&
+                	    !seleccionado.getRutaImagen().isEmpty()) {
+
+                	    Image imagen = new Image(
+                	            new File(seleccionado.getRutaImagen())
+                	                    .toURI()
+                	                    .toString());
+
+                	    imgPlaymobil.setImage(imagen);
+                	    rutaImagenSeleccionada = seleccionado.getRutaImagen();
+                	} else {
+
+                	    imgPlaymobil.setImage(null);
+                	    rutaImagenSeleccionada = null;
+                	}
             }
         });
     }
@@ -92,7 +113,7 @@ public class MainController {
                     Double.parseDouble(txtValorActual.getText()));
 
             p.setObservaciones(txtObservaciones.getText());
-            p.setRutaImagen("");
+            p.setRutaImagen(rutaImagenSeleccionada);
 
             boolean insertado = dao.insertar(p);
 
@@ -134,6 +155,8 @@ public class MainController {
         
         playmobilSeleccionado.setObservaciones(
                 txtObservaciones.getText());
+        
+        playmobilSeleccionado.setRutaImagen(rutaImagenSeleccionada);
        
         boolean actualizado =
                 dao.actualizar(playmobilSeleccionado);
@@ -177,11 +200,33 @@ public class MainController {
         txtPrecioCompra.clear();
         txtValorActual.clear();
         txtObservaciones.clear();
+        imgPlaymobil.setImage(null);
+        rutaImagenSeleccionada = null;
 
         playmobilSeleccionado = null;
     }
-    @FXML 
+    
+    @FXML
     private void seleccionarImagen() {
-    }    
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleccionar imagen");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Imágenes",
+                        "*.png",
+                        "*.jpg",
+                        "*.jpeg"));
+
+        File archivo =
+                fileChooser.showOpenDialog(
+                        imgPlaymobil.getScene().getWindow());
+
+        if (archivo != null) {
+            rutaImagenSeleccionada = archivo.getAbsolutePath();
+            Image imagen = new Image(archivo.toURI().toString());
+            imgPlaymobil.setImage(imagen);
+        }
+    }   
 }
 

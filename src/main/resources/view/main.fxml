@@ -24,11 +24,11 @@
                   <Label text="Colección" />
                   <TableView fx:id="tablaPlaymobil" prefHeight="200.0" prefWidth="200.0">
     				<columns>
-						<TableColumn fx:id="colReferencia" text="Referencia" prefWidth="100.0"/>
-        				<TableColumn fx:id="colNombre" text="Nombre" prefWidth="150.0"/>
-        				<TableColumn fx:id="colCategoria" text="Categoría" prefWidth="120.0"/>
-						<TableColumn fx:id="colPrecio" text="Precio Compra" prefWidth="110.0"/>
-        				<TableColumn fx:id="colValor" text="Valor Actual" prefWidth="110.0"/>
+						<TableColumn fx:id="colReferencia" prefWidth="100.0" text="Referencia" />
+        				<TableColumn fx:id="colNombre" prefWidth="150.0" text="Nombre" />
+        				<TableColumn fx:id="colCategoria" prefWidth="120.0" text="Categoría" />
+						<TableColumn fx:id="colPrecio" prefWidth="110.0" text="Precio Compra" />
+        				<TableColumn fx:id="colValor" prefWidth="110.0" text="Valor Actual" />
 					</columns>
 				</TableView>
                </children>

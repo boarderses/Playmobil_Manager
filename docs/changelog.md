@@ -30,6 +30,25 @@ Crear una aplicación de escritorio para gestionar una colección de Playmobil u
 
 ---
 
+ v0.3
+
+- Nueva interfaz con JavaFX.
+- Añadido formulario completo.
+- Añadida gestión de observaciones.
+- Refactorizado MainController.
+- Sincronizado FXML con el controlador.
+
+---
+
+ v0.4
+
+- Selección de imágenes mediante FileChooser.
+- Visualización de imágenes en ImageView.
+- Almacenamiento de la ruta de la imagen.
+- Carga automática de la imagen al seleccionar un Playmobil.
+
+---
+
 🔮 Futuras mejoras
 
 - [ ] Estadísticas de la colección
