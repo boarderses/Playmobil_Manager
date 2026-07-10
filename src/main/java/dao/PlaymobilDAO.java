@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,5 +113,24 @@ public class PlaymobilDAO {
 	    }
 
 	    return lista;
+	}
+	public boolean existeReferencia(String referencia) {
+
+	    String sql = "SELECT COUNT(*) FROM playmobil WHERE referencia = ?";
+
+	    try (Connection con = ConexionDB.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, referencia);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
 	}
 }

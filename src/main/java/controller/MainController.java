@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import model.Playmobil;
 import util.Alertas;
+import validation.PlaymobilValidator;
 
 public class MainController {
 
@@ -100,7 +101,7 @@ public class MainController {
     private void guardarPlaymobil() {
 
         try {
-            Playmobil p = new Playmobil();
+            Playmobil p = new Playmobil();         
 
             p.setReferencia(txtReferencia.getText());
             p.setNombre(txtNombre.getText());
@@ -114,6 +115,20 @@ public class MainController {
 
             p.setObservaciones(txtObservaciones.getText());
             p.setRutaImagen(rutaImagenSeleccionada);
+            
+            String error = PlaymobilValidator.validar(p);
+            
+            if (error != null) {
+            	Alertas.error("Error de validación", error);
+            	return;
+            }
+            if (dao.existeReferencia(p.getReferencia())) {
+
+                Alertas.error(
+                        "Referencia duplicada",
+                        "Ya existe un Playmobil con esa referencia.");         
+                return;
+            }
 
             boolean insertado = dao.insertar(p);
 
@@ -127,7 +142,15 @@ public class MainController {
 
                 limpiarFormularioPlaymobil();
             }
-         catch (Exception e) {
+        catch (NumberFormatException e) {
+            Alertas.error(
+                    "Formato incorrecto",
+                    "El precio de compra y el valor actual deben ser números.");
+        }
+        catch (Exception e) {
+            Alertas.error(
+                    "Error",
+                    "Ha ocurrido un error inesperado.");
             e.printStackTrace();
         }
     }

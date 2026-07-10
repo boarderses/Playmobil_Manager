@@ -1,36 +1,36 @@
 Playmobil Manager - Roadmap
 
-🎯 Objetivo del proyecto
+Objetivo del proyecto
 
 Crear una aplicación de escritorio para gestionar una colección de Playmobil utilizando JavaFX y MySQL.
 
 ---
 
-✅ Versión 0.1
+Versión 0.1
 
-- [x] Crear proyecto Maven
-- [x] Configurar Git y GitHub
-- [x] Configurar MySQL
-- [x] Crear modelo Playmobil
-- [x] Crear DAO
-- [x] Conexión a base de datos
-- [x] Insertar registros
-- [x] Mostrar registros
-- [x] CRUD básico
-- [x] JavaFX funcionando
-
----
-
-🚧 Versión 0.2 (En desarrollo)
-
-- [ ] Rediseño de la interfaz
-- [ ] Mostrar imágenes
-- [ ] Búsqueda por nombre y referencia
-- [ ] Mejorar experiencia de usuario
+- Crear proyecto Maven
+- Configurar Git y GitHub
+- Configurar MySQL
+- Crear modelo Playmobil
+- Crear DAO
+- Conexión a base de datos
+- Insertar registros
+- Mostrar registros
+- CRUD básico
+- JavaFX funcionando
 
 ---
 
- v0.3
+Versión 0.2
+
+- Rediseño de la interfaz
+- Mostrar imágenes
+- Búsqueda por nombre y referencia
+- Mejorar experiencia de usuario
+
+---
+
+Versión 0.3
 
 - Nueva interfaz con JavaFX.
 - Añadido formulario completo.
@@ -40,12 +40,34 @@ Crear una aplicación de escritorio para gestionar una colección de Playmobil u
 
 ---
 
- v0.4
+Versión 0.4
 
 - Selección de imágenes mediante FileChooser.
 - Visualización de imágenes en ImageView.
 - Almacenamiento de la ruta de la imagen.
 - Carga automática de la imagen al seleccionar un Playmobil.
+
+---
+
+Versión 0.5
+
+- Validación de campos obligatorios.
+- Validación de precios negativos.
+- Control de formato numérico.
+- Validación de referencias duplicadas.
+- Restricción UNIQUE en la base de datos.
+
+--- 
+
+Sprint 2 - Calidad
+
+- Validación del formulario
+- Referencias duplicadas
+- Buscador
+- ComboBox categorías
+- CSS
+- Estadísticas
+- Exportar PDF
 
 ---
 
