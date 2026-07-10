@@ -1,46 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.MainController">
-            
-    <top>
-    	<VBox spacing="5">
-    	
-    		<TextField fx:id="txtReferencia" promptText="Referencia"/>
-            <TextField fx:id="txtNombre" promptText="Nombre"/>
-            <TextField fx:id="txtCategoria" promptText="Categoría"/>
-            <TextField fx:id="txtPrecioCompra" promptText="Precio compra"/>
-            <TextField fx:id="txtValorActual" promptText="Valor actual"/>
-                      
-            	<HBox spacing="10">
-    				<Button text="Guardar"
-            				onAction="#guardarPlaymobil"/>
-
-    				<Button text="Modificar"
-            				onAction="#modificarPlaymobil"/>
-            		
-            		<Button text="Eliminar"
-            				onAction="#eliminarPlaymobil"/>
-				</HBox>
-				        
-    	</VBox>
-    </top>
-
-    <center>
-        <TableView fx:id="tablaPlaymobil">
-        
-        	<columns>
-        		<TableColumn fx:id="colReferencia" text="Referencia"/>
-                <TableColumn fx:id="colNombre" text="Nombre"/>
-                <TableColumn fx:id="colCategoria" text="Categoría"/>
-                <TableColumn fx:id="colPrecio" text="Precio Compra"/>
-                <TableColumn fx:id="colValor" text="Valor Actual"/>
-            </columns>
-            
-        </TableView> 
-    </center>
+<BorderPane prefHeight="607.0" prefWidth="446.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+   <center>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="138.0" prefWidth="233.0" spacing="10.0">
+               <children>
+                  <Label text="Buscar" />
+                  <TextField fx:id="txtBuscar" promptText="Buscar por referencia o nombre" />
+                  <Label text="Colección" />
+                  <TableView fx:id="tablaPlaymobil" prefHeight="200.0" prefWidth="200.0">
+    				<columns>
+						<TableColumn fx:id="colReferencia" text="Referencia" prefWidth="100.0"/>
+        				<TableColumn fx:id="colNombre" text="Nombre" prefWidth="150.0"/>
+        				<TableColumn fx:id="colCategoria" text="Categoría" prefWidth="120.0"/>
+						<TableColumn fx:id="colPrecio" text="Precio Compra" prefWidth="110.0"/>
+        				<TableColumn fx:id="colValor" text="Valor Actual" prefWidth="110.0"/>
+					</columns>
+				</TableView>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="651.0" prefWidth="206.0" spacing="10.0">
+               <children>
+                  <Label text="Datos del Playmobil" />
+                  <Label text="Referencia" />
+                  <TextField fx:id="txtReferencia" />
+                  <Label text="Nombre" />
+                  <TextField fx:id="txtNombre" />
+                  <Label text="Categoría" />
+                  <TextField fx:id="txtCategoria" />
+                  <Label text="Precio compra" />
+                  <TextField fx:id="txtPrecioCompra" />
+                  <Label text="Valor actual" />
+                  <TextField fx:id="txtValorActual" />
+                  <Label text="Observaciones" />
+                  <TextArea fx:id="txtObservaciones" prefHeight="200.0" prefWidth="200.0" />
+                  <Label text="Imagen" />
+                  <ImageView fx:id="imgPlaymobil" fitHeight="51.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="btnSeleccionarImagen" mnemonicParsing="false" onAction="#seleccionarImagen" text="Seleccionar imagen" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="btnGuardar" alignment="CENTER" mnemonicParsing="false" onAction="#guardarPlaymobil" text="Guardar" />
+                        <Button fx:id="btnModificar" alignment="CENTER" mnemonicParsing="false" onAction="#modificarPlaymobil" text="Modificar" />
+                        <Button fx:id="btnEliminar" alignment="CENTER" mnemonicParsing="false" onAction="#eliminarPlaymobil" text="Eliminar" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+   <top>
+      <VBox prefHeight="60.0" prefWidth="290.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefHeight="17.0" prefWidth="217.0" text="PLAYMOBIL MANAGER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </top>
 
 </BorderPane>

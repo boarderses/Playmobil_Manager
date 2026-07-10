@@ -180,5 +180,8 @@ public class MainController {
 
         playmobilSeleccionado = null;
     }
+    @FXML 
+    private void seleccionarImagen() {
+    }    
 }
 
