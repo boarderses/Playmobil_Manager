@@ -8,10 +8,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import model.Playmobil;
 import util.Alertas;
 import util.CategoriasPlaymobil;
+import util.VisorImagen;
 import validation.PlaymobilValidator;
 
 public class MainController {
@@ -60,7 +62,9 @@ public class MainController {
         .addListener((obs, anterior, seleccionado) -> {
 
             if (seleccionado != null) {
-
+            	
+            	btnModificar.setDisable(false);
+            	btnEliminar.setDisable(false);
                 playmobilSeleccionado = seleccionado;
 
                 txtReferencia.setText(seleccionado.getReferencia());
@@ -97,6 +101,10 @@ public class MainController {
         
         cmbCategoria.getItems().addAll(
                 CategoriasPlaymobil.CATEGORIAS);
+        
+        cargarTabla();
+        actualizarEstadoBotones();
+        enfocarPrimerCampo();
     }  
     private void cargarTabla() {
 
@@ -237,6 +245,8 @@ public class MainController {
         rutaImagenSeleccionada = null;
 
         playmobilSeleccionado = null;
+        actualizarEstadoBotones();
+        enfocarPrimerCampo();
     }
     
     @FXML
@@ -266,6 +276,25 @@ public class MainController {
         String texto = txtBuscar.getText();
 
         tablaPlaymobil.getItems().setAll(dao.buscar(texto));
+    }
+    private void enfocarPrimerCampo() {
+
+        txtReferencia.requestFocus();
+    }
+    private void actualizarEstadoBotones() {
+
+        boolean seleccionado = playmobilSeleccionado != null;
+
+        btnModificar.setDisable(!seleccionado);
+        btnEliminar.setDisable(!seleccionado);
+    }
+    @FXML
+    private void ampliarImagen(MouseEvent event) {
+
+        if (event.getClickCount() == 2) {
+        	System.out.print("Doble click");
+            VisorImagen.mostrar(rutaImagenSeleccionada);
+        }
     }
 }
 

@@ -45,7 +45,9 @@ public class PlaymobilDAO {
 	            nombre=?,
 	            categoria=?,
 	            precio_compra=?,
-	            valor_actual=?
+	            valor_actual=?,
+	            observaciones=?,
+	            ruta_imagen=?
 	        WHERE id=?
 	        """;
 
@@ -57,7 +59,9 @@ public class PlaymobilDAO {
 	        stmt.setString(3, p.getCategoria());
 	        stmt.setDouble(4, p.getPrecioCompra());
 	        stmt.setDouble(5, p.getValorActual());
-	        stmt.setInt(6, p.getId());
+	        stmt.setString(6, p.getObservaciones());
+	        stmt.setString(7, p.getRutaImagen());
+	        stmt.setInt(8, p.getId());
 
 	        return stmt.executeUpdate() > 0;
 

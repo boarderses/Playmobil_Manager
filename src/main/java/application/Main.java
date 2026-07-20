@@ -16,7 +16,12 @@ public class Main extends Application {
         );
 
         stage.setTitle("Playmobil Manager");
-        stage.setScene(new Scene(root, 600, 400));
+        Scene scene = new Scene(root, 950, 650);
+
+        scene.getStylesheets().add(
+                getClass().getResource("/css/style.css").toExternalForm());
+
+        stage.setScene(scene);
         stage.show();
     }
 
