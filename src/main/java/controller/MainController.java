@@ -3,13 +3,17 @@ package controller;
 import java.io.File;
 
 import dao.PlaymobilDAO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import model.Estadisticas;
 import model.Playmobil;
 import util.Alertas;
 import util.CategoriasPlaymobil;
@@ -41,6 +45,14 @@ public class MainController {
     @FXML private Button btnEliminar;
     @FXML private Button btnSeleccionarImagen;
     
+    @FXML private Label lblTotalPlaymobil;
+    @FXML private Label lblCompra;
+    @FXML private Label lblValorActual;
+    @FXML private Label lblBeneficio;
+    @FXML private Label lblCategorias;
+    
+    @FXML private PieChart graficoCategorias;
+    
     
     private Playmobil playmobilSeleccionado;
     private PlaymobilDAO dao = new PlaymobilDAO();
@@ -56,6 +68,8 @@ public class MainController {
         colValor.setCellValueFactory(new PropertyValueFactory<>("valorActual"));
 
         cargarTabla();
+        actualizarEstadisticas();
+        actualizarGraficoCategorias();
         
         tablaPlaymobil.getSelectionModel()
         .selectedItemProperty()
@@ -101,8 +115,7 @@ public class MainController {
         
         cmbCategoria.getItems().addAll(
                 CategoriasPlaymobil.CATEGORIAS);
-        
-        cargarTabla();
+              
         actualizarEstadoBotones();
         enfocarPrimerCampo();
     }  
@@ -110,6 +123,41 @@ public class MainController {
 
         tablaPlaymobil.getItems().clear();
         tablaPlaymobil.getItems().addAll(dao.obtenerTodos());
+    }
+    private void actualizarEstadisticas() {
+
+        Estadisticas estadisticas = dao.obtenerEstadisticas();
+
+        lblTotalPlaymobil.setText(
+                String.valueOf(estadisticas.getTotalPlaymobil()));
+
+        lblCompra.setText(
+                String.format("%.2f €", estadisticas.getTotalCompra()));
+
+        lblValorActual.setText(
+                String.format("%.2f €", estadisticas.getTotalValorActual()));
+        
+        double beneficio = estadisticas.getBeneficio();
+
+        lblBeneficio.setText(
+                String.format("%.2f €", estadisticas.getBeneficio()));
+        
+        if (beneficio > 0) {
+
+            lblBeneficio.setStyle(
+                    "-fx-text-fill: green; -fx-font-weight: bold;");
+
+        } else if (beneficio < 0) {
+
+            lblBeneficio.setStyle(
+                    "-fx-text-fill: red; -fx-font-weight: bold;");
+
+        } else {
+
+            lblBeneficio.setStyle(
+                    "-fx-text-fill: black; -fx-font-weight: bold;");
+        }
+        lblCategorias.setText(String.valueOf(dao.obtenerNumeroCategorias()));
     }
     @FXML
     private void guardarPlaymobil() {
@@ -152,6 +200,8 @@ public class MainController {
                         "Playmobil guardado correctamente");
 
                 cargarTabla();
+                actualizarEstadisticas();
+                actualizarGraficoCategorias();
                 limpiarFormularioPlaymobil();
 
             } else {
@@ -207,6 +257,8 @@ public class MainController {
             Alertas.info("Modificado","Playmobil actualizado correctamente");
 
         cargarTabla();
+        actualizarEstadisticas();
+        actualizarGraficoCategorias();
         }
     }
     @FXML
@@ -231,6 +283,8 @@ public class MainController {
         limpiarFormularioPlaymobil();
 
         cargarTabla();
+        actualizarEstadisticas();
+        actualizarGraficoCategorias();
         Alertas.info("Eliminado", "Playmobil eliminado correctamente");
     }
     private void limpiarFormularioPlaymobil() {
@@ -295,6 +349,23 @@ public class MainController {
         	System.out.print("Doble click");
             VisorImagen.mostrar(rutaImagenSeleccionada);
         }
+    }
+    
+    private void actualizarGraficoCategorias() {
+
+        ObservableList<PieChart.Data> datos =
+                FXCollections.observableArrayList();
+
+        dao.obtenerPlaymobilPorCategoria()
+                .forEach((categoria, cantidad) ->
+                        datos.add(new PieChart.Data(categoria,cantidad)));
+
+        graficoCategorias.setData(datos);
+        
+        graficoCategorias.setTitle("Distribución por categorías");
+        graficoCategorias.setLabelsVisible(true);
+        graficoCategorias.setLegendVisible(true);
+        graficoCategorias.setClockwise(true);        
     }
 }
 

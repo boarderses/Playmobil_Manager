@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -13,30 +14,41 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
 
 <BorderPane prefHeight="607.0" prefWidth="446.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <center>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="138.0" prefWidth="233.0" spacing="10.0">
+            <VBox prefWidth="450.0" spacing="10.0">
                <children>
                   <Label text="Buscar" />
                   <TextField fx:id="txtBuscar" promptText="Buscar por referencia o nombre" />
-                  <Label text="Colección" />
-                  <TableView fx:id="tablaPlaymobil" prefHeight="200.0" prefWidth="200.0">
-    				<columns>
-						<TableColumn fx:id="colReferencia" prefWidth="100.0" text="Referencia" />
-        				<TableColumn fx:id="colNombre" prefWidth="150.0" text="Nombre" />
-        				<TableColumn fx:id="colCategoria" prefWidth="120.0" text="Categoría" />
-						<TableColumn fx:id="colPrecio" prefWidth="110.0" text="Precio Compra" />
-        				<TableColumn fx:id="colValor" prefWidth="110.0" text="Valor Actual" />
-					</columns>
-				</TableView>
-               </children>
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-            </VBox>
+                  <TabPane prefWidth="430" prefHeight="650">
+                  <tabs>
+                   <Tab text="Colección" closable="false">
+                    <content>
+                        <TableView fx:id="tablaPlaymobil">
+                            <columns>
+                                <TableColumn fx:id="colReferencia" text="Referencia" prefWidth="100"/>
+                                <TableColumn fx:id="colNombre" text="Nombre" prefWidth="150"/>
+                                <TableColumn fx:id="colCategoria" text="Categoría" prefWidth="120"/>
+                                <TableColumn fx:id="colPrecio" text="Compra" prefWidth="100"/>
+                                <TableColumn fx:id="colValor" text="Valor" prefWidth="100"/>
+                            </columns>
+                        </TableView>
+                    </content>
+                </Tab>
+                		<Tab text="Estadísticas" closable="false">
+                    		<content>
+                        		<PieChart fx:id="graficoCategorias" legendVisible="true" labelsVisible="true"/>
+                    		</content>
+                		</Tab>
+            		</tabs>
+        		</TabPane>
+    		</children>
+    	</VBox>
             <VBox prefHeight="651.0" prefWidth="206.0" spacing="10.0">
                <children>
                   <Label text="Datos del Playmobil" />
@@ -53,7 +65,7 @@
                   <Label text="Observaciones" />
                   <TextArea fx:id="txtObservaciones" prefHeight="200.0" prefWidth="200.0" />
                   <Label text="Imagen" />
-                  <ImageView fx:id="imgPlaymobil" fitHeight="51.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#ampliarImagen"/>
+                  <ImageView fx:id="imgPlaymobil" fitHeight="51.0" fitWidth="164.0" onMouseClicked="#ampliarImagen" pickOnBounds="true" preserveRatio="true" />
                   <Button fx:id="btnSeleccionarImagen" mnemonicParsing="false" onAction="#seleccionarImagen" text="Seleccionar imagen" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
@@ -71,15 +83,45 @@
       </HBox>
    </center>
    <top>
-      <VBox prefHeight="60.0" prefWidth="290.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label prefHeight="17.0" prefWidth="217.0" text="PLAYMOBIL MANAGER">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
+    <VBox alignment="CENTER" spacing="15" BorderPane.alignment="CENTER">
+
+        <children>
+
+            <Label text="PLAYMOBIL MANAGER">
+                <font>
+                    <Font name="System Bold" size="18.0" />
+                </font>
             </Label>
-         </children>
-      </VBox>
-   </top>
+
+            <HBox alignment="CENTER" spacing="20">
+
+                <VBox styleClass="card-estadistica">
+                    <Label text="📦 Total" />
+                    <Label fx:id="lblTotalPlaymobil" styleClass="valor-estadistica" text="0" />
+                </VBox>
+
+                <VBox styleClass="card-estadistica">
+                    <Label text="💰 Compra" />
+                    <Label fx:id="lblCompra" styleClass="valor-estadistica" text="0 €" />
+                </VBox>
+
+                <VBox styleClass="card-estadistica">
+                    <Label text="📈 Valor" />
+                    <Label fx:id="lblValorActual" styleClass="valor-estadistica" text="0 €" />
+                </VBox>
+
+                <VBox styleClass="card-estadistica">
+                    <Label text="💵 Beneficio" />
+                    <Label fx:id="lblBeneficio" styleClass="valor-estadistica" text="0 €" />
+                </VBox>
+                
+                <VBox styleClass="card-estadistica">
+				    <Label text="📂 Categorías" />
+				    <Label fx:id="lblCategorias" styleClass="valor-estadistica" text="0" />
+				</VBox>
+            </HBox>
+        </children>
+    </VBox>
+</top>
 
 </BorderPane>

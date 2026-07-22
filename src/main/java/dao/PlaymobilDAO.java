@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import database.ConexionDB;
+import model.Estadisticas;
 import model.Playmobil;
 
 public class PlaymobilDAO {
@@ -178,5 +181,89 @@ public class PlaymobilDAO {
 	    }
 
 	    return lista;
+	}
+	public Estadisticas obtenerEstadisticas() {
+
+	    String sql = """
+	        SELECT
+	            COUNT(*) AS total,
+	            SUM(precio_compra) AS compra,
+	            SUM(valor_actual) AS valor
+	        FROM playmobil
+	        """;
+
+	    try (Connection conn = ConexionDB.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        if (rs.next()) {
+
+	            Estadisticas estadisticas = new Estadisticas();
+
+	            estadisticas.setTotalPlaymobil(
+	                    rs.getInt("total"));
+
+	            estadisticas.setTotalCompra(
+	                    rs.getDouble("compra"));
+
+	            estadisticas.setTotalValorActual(
+	                    rs.getDouble("valor"));
+
+	            return estadisticas;
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return new Estadisticas();
+	}	
+	public int obtenerNumeroCategorias() {
+
+	    String sql = """
+	            SELECT COUNT(DISTINCT categoria)
+	            FROM playmobil
+	            """;
+
+	    try (Connection conn = ConexionDB.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        if (rs.next()) {
+	            return rs.getInt(1);
+	        }
+	    }catch (Exception e) {
+				e.printStackTrace();
+			}
+	        return 0;
+	    }
+	
+	public Map<String, Integer> obtenerPlaymobilPorCategoria() {
+
+	    String sql = """
+	            SELECT categoria, COUNT(*) AS total
+	            FROM playmobil
+	            GROUP BY categoria
+	            ORDER BY total DESC
+	            """;
+
+	    Map<String, Integer> datos = new LinkedHashMap<>();
+
+	    try (Connection conn = ConexionDB.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+
+	            datos.put(
+	                    rs.getString("categoria"),
+	                    rs.getInt("total"));
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return datos;
 	}
 }
