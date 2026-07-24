@@ -15,13 +15,20 @@ public class Main extends Application {
                 getClass().getResource("/view/main.fxml")
         );
 
+        Scene scene = new Scene(root);
         stage.setTitle("Playmobil Manager");
-        Scene scene = new Scene(root, 950, 650);
-
+        
+        stage.setScene(scene);
         scene.getStylesheets().add(
                 getClass().getResource("/css/style.css").toExternalForm());
-
-        stage.setScene(scene);
+        
+        //Tamaño inicial
+        stage.setWidth(1450);
+        stage.setHeight(900);
+        //Tamaño mínimo
+        stage.setMinWidth(1200);
+        stage.setMinHeight(800);
+        
         stage.show();
     }
 

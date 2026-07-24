@@ -30,6 +30,7 @@ public class MainController {
     @FXML private TableColumn<Playmobil, String> colCategoria;
     @FXML private TableColumn<Playmobil, Double> colPrecio;
     @FXML private TableColumn<Playmobil, Double> colValor;
+    @FXML private TableColumn<Playmobil, String> colObservaciones;
     
     @FXML private TextField txtReferencia;
     @FXML private TextField txtNombre;
@@ -66,6 +67,7 @@ public class MainController {
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioCompra"));
         colValor.setCellValueFactory(new PropertyValueFactory<>("valorActual"));
+        colObservaciones.setCellValueFactory(new PropertyValueFactory<>("observaciones"));
 
         cargarTabla();
         actualizarEstadisticas();
