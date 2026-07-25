@@ -49,6 +49,8 @@ El proyecto está organizado siguiendo una arquitectura por capas:
 - ✔ Buscador
 - ✔ Dashboard de estadísticas
 - ✔ Gráfico por categorías
+- ✔ Exportación a CSV
+- ✔ Exportación a PDF
 
 ### Próximas mejoras
 

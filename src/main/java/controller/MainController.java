@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 
 import dao.PlaymobilDAO;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,6 +18,8 @@ import model.Estadisticas;
 import model.Playmobil;
 import util.Alertas;
 import util.CategoriasPlaymobil;
+import util.ExportadorCSV;
+import util.ExportadorPDF;
 import util.VisorImagen;
 import validation.PlaymobilValidator;
 
@@ -368,6 +371,77 @@ public class MainController {
         graficoCategorias.setLabelsVisible(true);
         graficoCategorias.setLegendVisible(true);
         graficoCategorias.setClockwise(true);        
+    }
+    @FXML
+    private void exportarCSV() {
+    	FileChooser fileChooser = new FileChooser();
+
+        fileChooser.setTitle("Exportar colección");
+
+        fileChooser.setInitialFileName("coleccion_playmobil.csv");
+
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Archivo CSV (*.csv)", "*.csv"));
+
+        File archivo = fileChooser.showSaveDialog(btnGuardar.getScene().getWindow());
+
+        if (archivo == null)
+            return;
+
+        try {
+
+            ExportadorCSV.exportar(dao.obtenerTodos(), archivo);
+
+            Alertas.mostrarInformacion("Exportación completada","Se ha exportado"
+            		+ dao.obtenerTodos().size() + "Playmobil correctamente.");
+
+        } catch (Exception e) {
+
+            Alertas.mostrarError("Error","No se pudo exportar el archivo.");
+
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void exportarPDF() {
+
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.setTitle("Exportar PDF");
+
+        fileChooser.setInitialFileName("coleccion_playmobil.pdf");
+
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Documento PDF (*.pdf)", "*.pdf"));
+
+        File archivo =
+                fileChooser.showSaveDialog(btnGuardar.getScene().getWindow());
+
+        if (archivo == null)
+            return;
+
+        try {
+
+            ExportadorPDF.exportar(
+                    dao.obtenerTodos(),
+                    archivo);
+
+            Alertas.mostrarInformacion("PDF generado","El informe se ha creado correctamente.");
+
+        } catch (Exception e) {
+
+            Alertas.mostrarError("Error","No se pudo generar el PDF.");
+
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void cerrarAplicacion() {
+
+        Platform.exit();
     }
 }
 

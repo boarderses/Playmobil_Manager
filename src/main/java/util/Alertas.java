@@ -42,4 +42,14 @@ public class Alertas {
         return resultado.isPresent()
                 && resultado.get() == ButtonType.OK;
     }
+
+	public static void mostrarInformacion(String string, String string2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void mostrarError(String string, String string2) {
+		// TODO Auto-generated method stub
+		
+	}
 }

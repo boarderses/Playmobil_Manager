@@ -20,7 +20,7 @@ Crear una aplicación de escritorio para gestionar una colección de Playmobil u
 - ✔ Categorías mediante ComboBox
 - ✔ CSS
 - ✔ Dashboard de estadísticas
-- ⏳ Exportar PDF
+- ✔ Exportar PDF
 
 # Sprint 3 - Funcionalidades avanzadas
 - Exportar Excel
