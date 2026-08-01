@@ -51,12 +51,11 @@ El proyecto está organizado siguiendo una arquitectura por capas:
 - ✔ Gráfico por categorías
 - ✔ Exportación a CSV
 - ✔ Exportación a PDF
+- ✔ Importación de datos
 
 ### Próximas mejoras
 
-- Exportación a PDF
 - Exportación a Excel
-- Importación de datos
 - Modo oscuro
 - Configuración de la aplicación
 - Copias de seguridad

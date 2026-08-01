@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.util.List;
 
 import dao.PlaymobilDAO;
 import javafx.application.Platform;
@@ -20,6 +21,7 @@ import util.Alertas;
 import util.CategoriasPlaymobil;
 import util.ExportadorCSV;
 import util.ExportadorPDF;
+import util.ImportadorCSV;
 import util.VisorImagen;
 import validation.PlaymobilValidator;
 
@@ -442,6 +444,42 @@ public class MainController {
     private void cerrarAplicacion() {
 
         Platform.exit();
+    }
+    @FXML
+    private void importarCSV() {
+    	FileChooser chooser = new FileChooser();
+
+    	chooser.setTitle("Importar colección");
+
+    	chooser.getExtensionFilters().add(
+    	        new FileChooser.ExtensionFilter("CSV", "*.csv"));
+    	
+    	File archivo = chooser.showOpenDialog(
+    	        tablaPlaymobil.getScene().getWindow());
+    	
+    	if (archivo == null) {
+    	    return;
+    	}
+    	
+    	try {
+
+    	    List<Playmobil> lista = ImportadorCSV.importar(archivo);    	        	 
+    	            
+    	    dao.importar(lista);
+    	    
+    	    cargarTabla();
+    	    actualizarEstadisticas();
+    	    actualizarGraficoCategorias();
+    	    limpiarFormularioPlaymobil();
+    	    actualizarEstadoBotones();
+    	    
+    	    Alertas.mostrarInformacion("Importación","Se han importado "
+                            + lista.size()
+                            + " registros.");
+    	}
+    	catch (Exception e) {
+    	    e.printStackTrace();
+    	}
     }
 }
 

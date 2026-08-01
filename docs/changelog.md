@@ -119,9 +119,14 @@ El proyecto sigue una numeración de versiones incremental mientras se desarroll
 
 # Versión 0.9
 
+- Añadida exportación a CSV.
 - Añadida exportación a PDF.
-- Informe con formato profesional.
-- Tabla con la colección.
-- Estadísticas de la colección.
-- Cabeceras en negrita.
-- Formato de moneda.
+- Informe PDF con formato profesional.
+- Tabla con la colección en el PDF.
+- Inclusión de estadísticas en el informe PDF.
+- Cabeceras del informe en negrita.
+- Formato de moneda en el informe.
+- Añadida importación desde archivos CSV.
+- Evitada la importación de referencias duplicadas.
+- Corrección del importador para admitir campos vacíos mediante `split(";", -1)`.
+- Actualización automática de la tabla, estadísticas y gráfico tras la importación.

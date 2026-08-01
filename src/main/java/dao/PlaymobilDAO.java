@@ -266,4 +266,14 @@ public class PlaymobilDAO {
 
 	    return datos;
 	}
+	public void importar(List<Playmobil> lista) {
+
+	    for (Playmobil p : lista) {
+
+	        if (!existeReferencia(p.getReferencia())) {
+
+	            insertar(p);	       
+	        }
+	    }
+	}
 }
