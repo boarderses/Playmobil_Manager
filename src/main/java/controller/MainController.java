@@ -20,6 +20,7 @@ import model.Playmobil;
 import util.Alertas;
 import util.CategoriasPlaymobil;
 import util.ExportadorCSV;
+import util.ExportadorExcel;
 import util.ExportadorPDF;
 import util.ImportadorCSV;
 import util.VisorImagen;
@@ -480,6 +481,45 @@ public class MainController {
     	catch (Exception e) {
     	    e.printStackTrace();
     	}
+    }
+    @FXML
+    private void exportarExcel() {
+
+        FileChooser chooser = new FileChooser();
+
+        chooser.setTitle("Exportar Excel");
+
+        chooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Excel (*.xlsx)", "*.xlsx"));
+
+        chooser.setInitialFileName("coleccion_playmobil.xlsx");
+
+        File archivo = chooser.showSaveDialog(
+                tablaPlaymobil.getScene().getWindow());
+
+        if (archivo == null) {
+            return;
+        }
+
+        try {
+
+            ExportadorExcel.exportar(
+                    dao.obtenerTodos(),
+                    archivo);
+
+            Alertas.mostrarInformacion(
+                    "Exportación",
+                    "Excel exportado correctamente.");
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            Alertas.mostrarError(
+                    "Error",
+                    "No se pudo exportar el Excel.");
+        }
     }
 }
 

@@ -131,7 +131,7 @@
 		   							<MenuItem text="Importar CSV..." onAction="#importarCSV"/>
 		   							<SeparatorMenuItem/>
 		   							<MenuItem text="Exportar CSV..." onAction="#exportarCSV"/>
-		   							<MenuItem text="Exportar Excel..." disable="true"/>
+		   							<MenuItem text="Exportar Excel..." onAction="#exportarExcel"/>
 		   							<MenuItem text="Exportar PDF..." onAction="#exportarPDF"/>
 		   							<SeparatorMenuItem/>
 		   							<MenuItem text="Salir" onAction="#cerrarAplicacion"/>
