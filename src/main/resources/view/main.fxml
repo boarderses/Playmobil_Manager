@@ -137,6 +137,8 @@
 		   							<MenuItem text="Crear copia de seguridad" onAction="#crearBackup"/>
 		   							<MenuItem text="Restaurar copia de seguridad" onAction="#restaurarBackup"/>
 		   							<SeparatorMenuItem/>
+									<MenuItem text="Configuración..." onAction="#abrirConfiguracion"/>
+		   							<SeparatorMenuItem/>
 		   							<MenuItem text="Salir" onAction="#cerrarAplicacion"/>
 		   						</items>
 		   					</Menu>

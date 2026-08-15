@@ -26,7 +26,7 @@ Crear una aplicación de escritorio para gestionar una colección de Playmobil u
 - ✔ Exportar Excel
 - ✔ Importar datos
 - ✔ Copias de seguridad
-- Configuración
+- ✔ Configuración
 
 # Sprint 4 - Pulido
 - Modo oscuro

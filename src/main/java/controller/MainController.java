@@ -10,6 +10,9 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,10 +20,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.Estadisticas;
 import model.Playmobil;
 import util.Alertas;
 import util.CategoriasPlaymobil;
+import util.Configuracion;
 import util.ExportadorBackup;
 import util.ExportadorCSV;
 import util.ExportadorExcel;
@@ -281,7 +287,8 @@ public class MainController {
         	Alertas.error("Selección requerida", "Debes seleccionar un Playmobil");
             return;
         }
-        
+        if (Configuracion.confirmarEliminar()) {
+        	
         boolean confirmar = Alertas.confirmar(
                 "Eliminar",
                 "¿Seguro que deseas eliminar este Playmobil?");
@@ -289,7 +296,7 @@ public class MainController {
         if (!confirmar) {
             return;
         }
-        
+    }
         dao.eliminar(playmobilSeleccionado.getId());
 
         limpiarFormularioPlaymobil();
@@ -416,7 +423,7 @@ public class MainController {
     	
         try {
 
-            File carpeta = new File("backups");
+            File carpeta = new File (Configuracion.getCarpetaBackups());
             
 
             if (!carpeta.exists()) {
@@ -454,6 +461,8 @@ public class MainController {
     @FXML
     private void restaurarBackup() {
 
+    	if (Configuracion.confirmarRestaurar()) {
+    		
         boolean confirmar = Alertas.confirmar(
                 "Restaurar copia de seguridad",
                 "La restauración reemplazará la colección actual.\n\n"
@@ -462,6 +471,7 @@ public class MainController {
         if (!confirmar) {
             return;
         }
+    }
 
         FileChooser chooser = new FileChooser();
 
@@ -629,6 +639,34 @@ public class MainController {
             Alertas.mostrarError(
                     "Error",
                     "No se pudo exportar el Excel.");
+        }
+    }
+    @FXML
+    private void abrirConfiguracion() {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/view/configuracion.fxml"));
+
+            Parent root = loader.load();
+
+            Stage ventana = new Stage();
+
+            ventana.setTitle("Configuración");
+            ventana.setScene(new Scene(root));
+
+            ventana.initModality(Modality.APPLICATION_MODAL);
+
+            ventana.showAndWait();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            Alertas.error(
+                    "Error",
+                    "No se pudo abrir la configuración.");
         }
     }
 }
