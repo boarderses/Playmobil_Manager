@@ -52,13 +52,13 @@ El proyecto está organizado siguiendo una arquitectura por capas:
 - ✔ Exportación a CSV
 - ✔ Exportación a PDF
 - ✔ Importación de datos
+- ✔ Exportación a Excel
+- ✔ Copias de seguridad
 
 ### Próximas mejoras
 
-- Exportación a Excel
 - Modo oscuro
 - Configuración de la aplicación
-- Copias de seguridad
 
 # Autor
 

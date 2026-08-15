@@ -135,6 +135,7 @@
 		   							<MenuItem text="Exportar PDF..." onAction="#exportarPDF"/>
 		   							<SeparatorMenuItem/>
 		   							<MenuItem text="Crear copia de seguridad" onAction="#crearBackup"/>
+		   							<MenuItem text="Restaurar copia de seguridad" onAction="#restaurarBackup"/>
 		   							<SeparatorMenuItem/>
 		   							<MenuItem text="Salir" onAction="#cerrarAplicacion"/>
 		   						</items>

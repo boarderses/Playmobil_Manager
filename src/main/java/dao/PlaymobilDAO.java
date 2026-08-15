@@ -276,4 +276,65 @@ public class PlaymobilDAO {
 	        }
 	    }
 	}
+	public void reemplazarColeccion(List<Playmobil> lista)
+	        throws SQLException {
+
+	    String sqlEliminar = "DELETE FROM playmobil";
+
+	    Connection conn = null;
+
+	    try {
+
+	        conn = ConexionDB.getConnection();
+
+	        conn.setAutoCommit(false);
+
+	        try (PreparedStatement stmtEliminar =
+	                     conn.prepareStatement(sqlEliminar)) {
+
+	            stmtEliminar.executeUpdate();
+	        }
+
+	        for (Playmobil p : lista) {
+
+	            String sqlInsertar = """
+	                INSERT INTO playmobil
+	                (referencia, nombre, categoria, precio_compra,
+	                 valor_actual, observaciones, ruta_imagen)
+	                VALUES (?, ?, ?, ?, ?, ?, ?)
+	                """;
+
+	            try (PreparedStatement stmt =
+	                         conn.prepareStatement(sqlInsertar)) {
+
+	                stmt.setString(1, p.getReferencia());
+	                stmt.setString(2, p.getNombre());
+	                stmt.setString(3, p.getCategoria());
+	                stmt.setDouble(4, p.getPrecioCompra());
+	                stmt.setDouble(5, p.getValorActual());
+	                stmt.setString(6, p.getObservaciones());
+	                stmt.setString(7, p.getRutaImagen());
+
+	                stmt.executeUpdate();
+	            }
+	        }
+
+	        conn.commit();
+
+	    } catch (SQLException e) {
+
+	        if (conn != null) {
+	            conn.rollback();
+	        }
+
+	        throw e;
+
+	    } finally {
+
+	        if (conn != null) {
+	            conn.setAutoCommit(true);
+	            conn.close();
+	        }
+	    }
+	}
 }

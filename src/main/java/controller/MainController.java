@@ -451,6 +451,70 @@ public class MainController {
                     "No se pudo crear la copia de seguridad.");
         }
     }
+    @FXML
+    private void restaurarBackup() {
+
+        boolean confirmar = Alertas.confirmar(
+                "Restaurar copia de seguridad",
+                "La restauración reemplazará la colección actual.\n\n"
+                + "¿Deseas continuar?");
+
+        if (!confirmar) {
+            return;
+        }
+
+        FileChooser chooser = new FileChooser();
+
+        chooser.setTitle("Seleccionar copia de seguridad");
+
+        chooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Copias de seguridad (*.csv)", "*.csv"));
+
+        File archivo = chooser.showOpenDialog(
+                tablaPlaymobil.getScene().getWindow());
+
+        if (archivo == null) {
+            return;
+        }
+
+        try {
+
+            List<Playmobil> lista =
+                    ImportadorCSV.importar(archivo);
+
+            if (lista.isEmpty()) {
+
+                Alertas.error(
+                        "Restauración",
+                        "La copia de seguridad está vacía.");
+
+                return;
+            }
+
+            dao.reemplazarColeccion(lista);
+
+            cargarTabla();
+            actualizarEstadisticas();
+            actualizarGraficoCategorias();
+            limpiarFormularioPlaymobil();
+            actualizarEstadoBotones();
+
+            Alertas.info(
+                    "Restauración completada",
+                    "La colección se ha restaurado correctamente.\n\n"
+                    + "Registros restaurados: "
+                    + lista.size());
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            Alertas.error(
+                    "Error",
+                    "No se pudo restaurar la copia de seguridad.");
+        }
+    }
     
     @FXML
     private void exportarPDF() {
