@@ -34,7 +34,7 @@ public class PlaymobilDAO {
             
             return stmt.executeUpdate() > 0;
             
-		} catch (Exception e) {
+		} catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -68,7 +68,7 @@ public class PlaymobilDAO {
 
 	        return stmt.executeUpdate() > 0;
 
-	    } catch (Exception e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false;
 	    }
@@ -84,7 +84,7 @@ public class PlaymobilDAO {
 
 	        return stmt.executeUpdate() > 0;
 
-	    } catch (Exception e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false;
 	    }
@@ -115,7 +115,7 @@ public class PlaymobilDAO {
 	            lista.add(p);
 	        }
 
-	    } catch (Exception e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 
@@ -129,10 +129,11 @@ public class PlaymobilDAO {
 	         PreparedStatement ps = con.prepareStatement(sql)) {
 
 	        ps.setString(1, referencia);
-	        ResultSet rs = ps.executeQuery();
+	        try (ResultSet rs = ps.executeQuery()) {
 
-	        if (rs.next()) {
-	            return rs.getInt(1) > 0;
+	        	if (rs.next()) {
+		            return rs.getInt(1) > 0;
+		        }
 	        }
 
 	    } catch (SQLException e) {
@@ -158,8 +159,8 @@ public class PlaymobilDAO {
 	        ps.setString(1, "%" + texto + "%");
 	        ps.setString(2, "%" + texto + "%");
 
-	        ResultSet rs = ps.executeQuery();
-
+	        try (ResultSet rs = ps.executeQuery()){
+	        		      
 	        while (rs.next()) {
 
 	            Playmobil p = new Playmobil();
@@ -174,8 +175,8 @@ public class PlaymobilDAO {
 	            p.setRutaImagen(rs.getString("ruta_imagen"));
 
 	            lista.add(p);
-	        }
-
+	        	}
+	    	}
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -212,7 +213,7 @@ public class PlaymobilDAO {
 	            return estadisticas;
 	        }
 
-	    } catch (Exception e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 
@@ -232,7 +233,7 @@ public class PlaymobilDAO {
 	        if (rs.next()) {
 	            return rs.getInt(1);
 	        }
-	    }catch (Exception e) {
+	    }catch (SQLException e) {
 				e.printStackTrace();
 			}
 	        return 0;
@@ -260,7 +261,7 @@ public class PlaymobilDAO {
 	                    rs.getInt("total"));
 	        }
 
-	    } catch (Exception e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 
@@ -293,9 +294,7 @@ public class PlaymobilDAO {
 	                     conn.prepareStatement(sqlEliminar)) {
 
 	            stmtEliminar.executeUpdate();
-	        }
-
-	        for (Playmobil p : lista) {
+	        }	        
 
 	            String sqlInsertar = """
 	                INSERT INTO playmobil
@@ -306,7 +305,9 @@ public class PlaymobilDAO {
 
 	            try (PreparedStatement stmt =
 	                         conn.prepareStatement(sqlInsertar)) {
-
+	            		          
+	            	for (Playmobil p : lista) {
+	            			            
 	                stmt.setString(1, p.getReferencia());
 	                stmt.setString(2, p.getNombre());
 	                stmt.setString(3, p.getCategoria());
@@ -348,13 +349,14 @@ public class PlaymobilDAO {
 	        stmt.setString(1, referencia);
 	        stmt.setInt(2, id);
 
-	        ResultSet rs = stmt.executeQuery();
+	        try (ResultSet rs = stmt.executeQuery()){
 
 	        if (rs.next()) {
 	            return rs.getInt(1) > 0;
 	        }
+	    }
 
-	    } catch (Exception e) {
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 
