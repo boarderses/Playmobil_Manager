@@ -31,6 +31,7 @@ public class Alertas {
 
     public static boolean confirmar(String titulo, String mensaje) {
 
+    	
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
         alert.setTitle(titulo);
@@ -43,13 +44,4 @@ public class Alertas {
                 && resultado.get() == ButtonType.OK;
     }
 
-	public static void mostrarInformacion(String string, String string2) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public static void mostrarError(String string, String string2) {
-		// TODO Auto-generated method stub
-		
-	}
 }

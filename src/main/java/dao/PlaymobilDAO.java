@@ -337,4 +337,27 @@ public class PlaymobilDAO {
 	        }
 	    }
 	}
+	public boolean existeReferenciaExceptoId(String referencia, int id) {
+
+	    String sql = "SELECT COUNT(*) FROM playmobil "
+	               + "WHERE referencia = ? AND id <> ?";
+
+	    try (Connection conn = ConexionDB.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setString(1, referencia);
+	        stmt.setInt(2, id);
+
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return false;
+	}
 }

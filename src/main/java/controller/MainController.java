@@ -72,19 +72,13 @@ public class MainController {
     
     
     private Playmobil playmobilSeleccionado;
-    private PlaymobilDAO dao = new PlaymobilDAO();
+    private final PlaymobilDAO dao = new PlaymobilDAO();
     private String rutaImagenSeleccionada;
 
     @FXML
     public void initialize() {
     	
-    	colReferencia.setCellValueFactory(new PropertyValueFactory<>("referencia"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
-        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioCompra"));
-        colValor.setCellValueFactory(new PropertyValueFactory<>("valorActual"));
-        colObservaciones.setCellValueFactory(new PropertyValueFactory<>("observaciones"));
-
+    	configurarTabla();
         cargarTabla();
         actualizarEstadisticas();
         actualizarGraficoCategorias();
@@ -137,6 +131,16 @@ public class MainController {
         actualizarEstadoBotones();
         enfocarPrimerCampo();
     }  
+    
+    private void configurarTabla() {
+		
+    	colReferencia.setCellValueFactory(new PropertyValueFactory<>("referencia"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioCompra"));
+        colValor.setCellValueFactory(new PropertyValueFactory<>("valorActual"));
+        colObservaciones.setCellValueFactory(new PropertyValueFactory<>("observaciones"));
+	}
     private void cargarTabla() {
 
         tablaPlaymobil.getItems().clear();
@@ -217,10 +221,7 @@ public class MainController {
                 Alertas.info("Guardado",
                         "Playmobil guardado correctamente");
 
-                cargarTabla();
-                actualizarEstadisticas();
-                actualizarGraficoCategorias();
-                limpiarFormularioPlaymobil();
+                actualizarInterfaz();
 
             } else {
 
@@ -247,36 +248,69 @@ public class MainController {
             return;
         }
 
-        playmobilSeleccionado.setReferencia(
-                txtReferencia.getText());
+        try {
 
-        playmobilSeleccionado.setNombre(
-                txtNombre.getText());
+            playmobilSeleccionado.setReferencia(txtReferencia.getText());
+            playmobilSeleccionado.setNombre(txtNombre.getText());
+            playmobilSeleccionado.setCategoria(cmbCategoria.getValue());
+            playmobilSeleccionado.setPrecioCompra(Double.parseDouble(txtPrecioCompra.getText()));
+            playmobilSeleccionado.setValorActual(Double.parseDouble(txtValorActual.getText()));
+            playmobilSeleccionado.setObservaciones(txtObservaciones.getText());
+            playmobilSeleccionado.setRutaImagen(rutaImagenSeleccionada);
 
-        playmobilSeleccionado.setCategoria(
-                cmbCategoria.getValue());
+            String error = PlaymobilValidator.validar(
+                    playmobilSeleccionado);
 
-        playmobilSeleccionado.setPrecioCompra(
-                Double.parseDouble(txtPrecioCompra.getText()));
+            if (error != null) {
 
-        playmobilSeleccionado.setValorActual(
-                Double.parseDouble(txtValorActual.getText()));
-        
-        playmobilSeleccionado.setObservaciones(
-                txtObservaciones.getText());
-        
-        playmobilSeleccionado.setRutaImagen(rutaImagenSeleccionada);
-       
-        boolean actualizado =
-                dao.actualizar(playmobilSeleccionado);
+                Alertas.error(
+                        "Error de validación",
+                        error);
+                return;
+            }
+            
+            if (dao.existeReferenciaExceptoId(
+                    playmobilSeleccionado.getReferencia(),
+                    playmobilSeleccionado.getId())) {
 
-        if (actualizado) {
+                Alertas.error(
+                        "Referencia duplicada",
+                        "Ya existe otro Playmobil con esa referencia.");
 
-            Alertas.info("Modificado","Playmobil actualizado correctamente");
+                return;
+            }
 
-        cargarTabla();
-        actualizarEstadisticas();
-        actualizarGraficoCategorias();
+            boolean actualizado =
+                    dao.actualizar(playmobilSeleccionado);
+
+            if (actualizado) {
+
+                Alertas.info(
+                        "Modificado",
+                        "Playmobil actualizado correctamente");
+
+                actualizarInterfaz();
+
+            } else {
+
+                Alertas.error(
+                        "Error",
+                        "No se pudo actualizar el Playmobil.");
+            }
+
+        } catch (NumberFormatException e) {
+
+            Alertas.error(
+                    "Formato incorrecto",
+                    "El precio de compra y el valor actual deben ser números.");
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            Alertas.error(
+                    "Error",
+                    "Ha ocurrido un error inesperado.");
         }
     }
     @FXML
@@ -299,11 +333,7 @@ public class MainController {
     }
         dao.eliminar(playmobilSeleccionado.getId());
 
-        limpiarFormularioPlaymobil();
-
-        cargarTabla();
-        actualizarEstadisticas();
-        actualizarGraficoCategorias();
+        actualizarInterfaz();
         Alertas.info("Eliminado", "Playmobil eliminado correctamente");
     }
     private void limpiarFormularioPlaymobil() {
@@ -407,12 +437,12 @@ public class MainController {
 
             ExportadorCSV.exportar(dao.obtenerTodos(), archivo);
 
-            Alertas.mostrarInformacion("Exportación completada","Se ha exportado"
+            Alertas.info("Exportación completada","Se ha exportado"
             		+ dao.obtenerTodos().size() + "Playmobil correctamente.");
 
         } catch (Exception e) {
 
-            Alertas.mostrarError("Error","No se pudo exportar el archivo.");
+            Alertas.error("Error","No se pudo exportar el archivo.");
 
             e.printStackTrace();
         }
@@ -504,11 +534,7 @@ public class MainController {
 
             dao.reemplazarColeccion(lista);
 
-            cargarTabla();
-            actualizarEstadisticas();
-            actualizarGraficoCategorias();
-            limpiarFormularioPlaymobil();
-            actualizarEstadoBotones();
+            actualizarInterfaz();
 
             Alertas.info(
                     "Restauración completada",
@@ -550,12 +576,12 @@ public class MainController {
             ExportadorPDF.exportar(
                     dao.obtenerTodos(),
                     archivo);
-
-            Alertas.mostrarInformacion("PDF generado","El informe se ha creado correctamente.");
+            
+            Alertas.info("PDF generado", "El informe se ha creado correctamente.");
 
         } catch (Exception e) {
 
-            Alertas.mostrarError("Error","No se pudo generar el PDF.");
+            Alertas.error("Error","No se pudo generar el PDF.");
 
             e.printStackTrace();
         }
@@ -588,18 +614,19 @@ public class MainController {
     	            
     	    dao.importar(lista);
     	    
-    	    cargarTabla();
-    	    actualizarEstadisticas();
-    	    actualizarGraficoCategorias();
-    	    limpiarFormularioPlaymobil();
-    	    actualizarEstadoBotones();
+    	    actualizarInterfaz();
     	    
-    	    Alertas.mostrarInformacion("Importación","Se han importado "
-                            + lista.size()
-                            + " registros.");
+    	    Alertas.info("Importación","Se han importado "
+                    + lista.size()
+                    + " registros.");
+    	    
     	}
     	catch (Exception e) {
     	    e.printStackTrace();
+    	    
+    	    Alertas.error(
+    	    	    "Error",
+    	    	    "No se pudo importar el archivo CSV.");
     	}
     }
     @FXML
@@ -627,16 +654,15 @@ public class MainController {
             ExportadorExcel.exportar(
                     dao.obtenerTodos(),
                     archivo);
+            
+            Alertas.info("Exportación","Excel exportado correctamente.");
 
-            Alertas.mostrarInformacion(
-                    "Exportación",
-                    "Excel exportado correctamente.");
 
         } catch (Exception e) {
 
             e.printStackTrace();
 
-            Alertas.mostrarError(
+            Alertas.error(
                     "Error",
                     "No se pudo exportar el Excel.");
         }
@@ -668,6 +694,13 @@ public class MainController {
                     "Error",
                     "No se pudo abrir la configuración.");
         }
+    }
+    private void actualizarInterfaz() {
+
+        cargarTabla();
+        actualizarEstadisticas();
+        actualizarGraficoCategorias();
+        limpiarFormularioPlaymobil();
     }
 }
 
