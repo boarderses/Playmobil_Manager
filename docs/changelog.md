@@ -130,3 +130,9 @@ El proyecto sigue una numeración de versiones incremental mientras se desarroll
 - Evitada la importación de referencias duplicadas.
 - Corrección del importador para admitir campos vacíos mediante `split(";", -1)`.
 - Actualización automática de la tabla, estadísticas y gráfico tras la importación.
+- Añadida exportación a Excel (.xlsx).
+- Cabeceras con formato profesional.
+- Ajuste automático de columnas.
+- Formato de moneda.
+- Fecha de exportación.
+- Resumen final de la colección.

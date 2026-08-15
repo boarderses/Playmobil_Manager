@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import dao.PlaymobilDAO;
@@ -19,12 +21,14 @@ import model.Estadisticas;
 import model.Playmobil;
 import util.Alertas;
 import util.CategoriasPlaymobil;
+import util.ExportadorBackup;
 import util.ExportadorCSV;
 import util.ExportadorExcel;
 import util.ExportadorPDF;
 import util.ImportadorCSV;
 import util.VisorImagen;
 import validation.PlaymobilValidator;
+
 
 public class MainController {
 
@@ -406,6 +410,48 @@ public class MainController {
             e.printStackTrace();
         }
     }
+    
+    @FXML
+    private void crearBackup() {
+    	
+        try {
+
+            File carpeta = new File("backups");
+            
+
+            if (!carpeta.exists()) {
+                carpeta.mkdirs();
+            }
+            
+            DateTimeFormatter formato =
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+
+            String nombreArchivo =
+                    "backup_" +
+                    LocalDateTime.now().format(formato) +
+                    ".csv";
+
+            File archivo = new File(carpeta, nombreArchivo);
+
+            List<Playmobil> lista = dao.obtenerTodos();
+
+            ExportadorBackup.crearBackup(lista, archivo);           
+
+            Alertas.info(
+                    "Copia de seguridad",
+                    "Copia de seguridad creada correctamente.\n\n"
+                    + archivo.getAbsolutePath());
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            Alertas.error(
+                    "Error",
+                    "No se pudo crear la copia de seguridad.");
+        }
+    }
+    
     @FXML
     private void exportarPDF() {
 

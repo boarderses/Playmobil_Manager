@@ -15,7 +15,7 @@ public class ExportadorCSV {
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(archivo))) {
 
-        writer.println("Referencia;Nombre;Categoría;Precio Compra;Valor Actual; Observaciones;Ruta Imagen");
+        writer.println("Referencia;Nombre;Categoría;Precio Compra;Valor Actual;Observaciones;Ruta Imagen");
 
         for (Playmobil p : lista) {
 
