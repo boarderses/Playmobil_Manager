@@ -28,7 +28,8 @@ public class Playmobil {
     	this.valorActual = valorActual;
     	this.observaciones = observaciones;
     	this.rutaImagen = rutaImagen;
-}
+    }
+
 
 	public Playmobil(int id, String referencia, String nombre, String categoria, double precioCompra,
 			double valorActual, String observaciones, String rutaImagen) {
@@ -105,7 +106,13 @@ public class Playmobil {
 	public void setRutaImagen(String rutaImagen) {
 		this.rutaImagen = rutaImagen;
 	}
-    
+   
+	@Override
+	public String toString() {
+		return "Playmobil [id=" + id + ", referencia=" + referencia + ", nombre=" + nombre + ", categoria=" + categoria
+				+ ", precioCompra=" + precioCompra + ", valorActual=" + valorActual + ", observaciones=" + observaciones
+				+ ", rutaImagen=" + rutaImagen + "]";
+	}
     
 
 }

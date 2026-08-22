@@ -162,7 +162,7 @@ public class MainController {
         double beneficio = estadisticas.getBeneficio();
 
         lblBeneficio.setText(
-                String.format("%.2f €", estadisticas.getBeneficio()));
+                String.format("%.2f €", beneficio));
         
         if (beneficio > 0) {
 
@@ -237,8 +237,7 @@ public class MainController {
         catch (Exception e) {
             Alertas.error(
                     "Error",
-                    "Ha ocurrido un error inesperado.");
-            e.printStackTrace();
+                    "Ha ocurrido un error inesperado.");       
         }
     }
     @FXML
@@ -306,8 +305,6 @@ public class MainController {
 
         } catch (Exception e) {
 
-            e.printStackTrace();
-
             Alertas.error(
                     "Error",
                     "Ha ocurrido un error inesperado.");
@@ -331,10 +328,19 @@ public class MainController {
             return;
         }
     }
-        dao.eliminar(playmobilSeleccionado.getId());
+        boolean eliminado = dao.eliminar(playmobilSeleccionado.getId());
 
-        actualizarInterfaz();
-        Alertas.info("Eliminado", "Playmobil eliminado correctamente");
+        if (eliminado) {
+            actualizarInterfaz();
+
+            Alertas.info(
+                    "Eliminado",
+                    "Playmobil eliminado correctamente.");
+        } else {
+            Alertas.error(
+                    "Error",
+                    "No se pudo eliminar el Playmobil.");
+        }
     }
     private void limpiarFormularioPlaymobil() {
 
@@ -395,7 +401,6 @@ public class MainController {
     private void ampliarImagen(MouseEvent event) {
 
         if (event.getClickCount() == 2) {
-        	System.out.print("Doble click");
             VisorImagen.mostrar(rutaImagenSeleccionada);
         }
     }
@@ -435,16 +440,18 @@ public class MainController {
 
         try {
 
-            ExportadorCSV.exportar(dao.obtenerTodos(), archivo);
+        	List<Playmobil> lista = dao.obtenerTodos();
 
-            Alertas.info("Exportación completada","Se ha exportado"
-            		+ dao.obtenerTodos().size() + "Playmobil correctamente.");
+        	ExportadorCSV.exportar(lista, archivo);
+
+        	Alertas.info(
+        	        "Exportación completada",
+        	        "Se han exportado " + lista.size()
+        	        + " Playmobil correctamente.");
 
         } catch (Exception e) {
 
             Alertas.error("Error","No se pudo exportar el archivo.");
-
-            e.printStackTrace();
         }
     }
     
@@ -480,8 +487,6 @@ public class MainController {
                     + archivo.getAbsolutePath());
 
         } catch (Exception e) {
-
-            e.printStackTrace();
 
             Alertas.error(
                     "Error",
@@ -544,8 +549,6 @@ public class MainController {
 
         } catch (Exception e) {
 
-            e.printStackTrace();
-
             Alertas.error(
                     "Error",
                     "No se pudo restaurar la copia de seguridad.");
@@ -573,9 +576,9 @@ public class MainController {
 
         try {
 
-            ExportadorPDF.exportar(
-                    dao.obtenerTodos(),
-                    archivo);
+        	List<Playmobil> lista = dao.obtenerTodos();
+
+        	ExportadorPDF.exportar(lista, archivo);
             
             Alertas.info("PDF generado", "El informe se ha creado correctamente.");
 
@@ -583,7 +586,6 @@ public class MainController {
 
             Alertas.error("Error","No se pudo generar el PDF.");
 
-            e.printStackTrace();
         }
     }
 
@@ -612,17 +614,16 @@ public class MainController {
 
     	    List<Playmobil> lista = ImportadorCSV.importar(archivo);    	        	 
     	            
-    	    dao.importar(lista);
+    	    int importados = dao.importar(lista);
     	    
     	    actualizarInterfaz();
     	    
     	    Alertas.info("Importación","Se han importado "
-                    + lista.size()
+                    + importados
                     + " registros.");
     	    
     	}
     	catch (Exception e) {
-    	    e.printStackTrace();
     	    
     	    Alertas.error(
     	    	    "Error",
@@ -651,16 +652,14 @@ public class MainController {
 
         try {
 
-            ExportadorExcel.exportar(
-                    dao.obtenerTodos(),
-                    archivo);
+        	List<Playmobil> lista = dao.obtenerTodos();
+
+        	ExportadorExcel.exportar(lista, archivo);
             
             Alertas.info("Exportación","Excel exportado correctamente.");
 
 
         } catch (Exception e) {
-
-            e.printStackTrace();
 
             Alertas.error(
                     "Error",
@@ -687,8 +686,6 @@ public class MainController {
             ventana.showAndWait();
 
         } catch (Exception e) {
-
-            e.printStackTrace();
 
             Alertas.error(
                     "Error",

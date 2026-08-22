@@ -46,11 +46,19 @@ public class PlaymobilValidator {
         if (p.getCategoria() == null || p.getCategoria().isBlank()) {
             return "La categoría es obligatoria.";
         }
+        
+        if (!Double.isFinite(p.getPrecioCompra())) {
+            return "El precio de compra no es válido.";
+        }
 
         if (p.getPrecioCompra() < 0) {
             return "El precio de compra no puede ser negativo.";
         }
-
+        
+        if (!Double.isFinite(p.getValorActual())) {
+            return "El valor actual no es válido.";
+        }
+        
         if (p.getValorActual() < 0) {
             return "El valor actual no puede ser negativo.";
         }

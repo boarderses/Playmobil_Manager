@@ -9,7 +9,7 @@ public class Estadisticas {
     public Estadisticas() {
     }
 
-    public Estadisticas(int totalPlaymobil,double totalCompra,double totalValorActual) {
+    public Estadisticas(int totalPlaymobil, double totalCompra, double totalValorActual) {
 
         this.totalPlaymobil = totalPlaymobil;
         this.totalCompra = totalCompra;

@@ -31,7 +31,6 @@ public class Alertas {
 
     public static boolean confirmar(String titulo, String mensaje) {
 
-    	
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
         alert.setTitle(titulo);

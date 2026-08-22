@@ -2,13 +2,13 @@ package util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
-
-import dao.PlaymobilDAO;
 
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
@@ -25,16 +25,17 @@ import model.Playmobil;
 public class ExportadorPDF {
 
     public static void exportar(List<Playmobil> lista, File archivo)
-            throws Exception {
-    	PlaymobilDAO dao = new PlaymobilDAO();
-
-    	Estadisticas estadisticas = dao.obtenerEstadisticas();
+            throws IOException {
     	
-    	java.text.DecimalFormat formato =
-    	        new java.text.DecimalFormat("#,##0.00 €");
+
+    	Estadisticas estadisticas = calcularEstadisticas(lista);
+    	
+    	DecimalFormat formato =
+                new DecimalFormat("#,##0.00 €");
     	
         Document documento = new Document();
 
+        try {
         PdfWriter.getInstance(documento,
                 new FileOutputStream(archivo));
 
@@ -44,6 +45,7 @@ public class ExportadorPDF {
 
         String fecha = LocalDateTime.now().format(formatoFecha);
 
+        // Título
         Font titulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD,22);
         Paragraph pTitulo =
                 new Paragraph("PLAYMOBIL MANAGER", titulo);
@@ -53,6 +55,7 @@ public class ExportadorPDF {
         documento.add(pTitulo);
         documento.add(new Paragraph(" "));
         
+        // Información del informe
         documento.add(new Paragraph("Informe de la colección"));
         documento.add(new Paragraph(" "));
         
@@ -65,10 +68,7 @@ public class ExportadorPDF {
 
         documento.add(new Paragraph(String.format("Valor actual: %.2f €",estadisticas.getTotalValorActual())));
 
-        double beneficio = estadisticas.getTotalValorActual()
-                - estadisticas.getTotalCompra();
-
-        documento.add(new Paragraph(String.format("Beneficio: %.2f €",beneficio)));
+        documento.add(new Paragraph(String.format("Beneficio: %.2f €",estadisticas.getBeneficio())));
 
         documento.add(new Paragraph(" "));
         
@@ -76,6 +76,7 @@ public class ExportadorPDF {
                 "Número de figuras: " + lista.size()));
         documento.add(new Paragraph(" "));
         
+        // Tabla
         PdfPTable tabla = new PdfPTable(5);
         tabla.setWidthPercentage(100);
         tabla.addCell(crearCabecera("Referencia"));
@@ -91,19 +92,55 @@ public class ExportadorPDF {
             tabla.addCell(formato.format(p.getPrecioCompra()));
             tabla.addCell(formato.format(p.getValorActual()));
         }
-        documento.add(tabla);              
+        documento.add(tabla); 
+        
+        }finally {		
 
         documento.close();
+        }
     }
-    private static PdfPCell crearCabecera(String texto) {
+    private static Estadisticas calcularEstadisticas(
+            List<Playmobil> lista) {
 
-        Font fuente = FontFactory.getFont(
-                FontFactory.HELVETICA_BOLD);
+        Estadisticas estadisticas =
+                new Estadisticas();
+
+        estadisticas.setTotalPlaymobil(
+                lista.size());
+
+        double totalCompra = 0;
+        double totalValorActual = 0;
+
+        for (Playmobil p : lista) {
+
+            totalCompra += p.getPrecioCompra();
+            totalValorActual += p.getValorActual();
+        }
+
+        estadisticas.setTotalCompra(
+                totalCompra);
+
+        estadisticas.setTotalValorActual(
+                totalValorActual);
+
+        return estadisticas;
+    }
+
+    private static PdfPCell crearCabecera(
+            String texto) {
+
+        Font fuente =
+                FontFactory.getFont(
+                        FontFactory.HELVETICA_BOLD);
 
         PdfPCell celda =
-                new PdfPCell(new Phrase(texto, fuente));
+                new PdfPCell(
+                        new Phrase(
+                                texto,
+                                fuente));
 
-        celda.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+        celda.setHorizontalAlignment(
+                PdfPCell.ALIGN_CENTER);
 
         return celda;
     }

@@ -86,9 +86,7 @@ public class ConfiguracionController {
             cerrar();
 
         } catch (IOException e) {
-
-            e.printStackTrace();
-
+       
             Alertas.error(
                     "Error",
                     "No se pudo guardar la configuración.");

@@ -20,15 +20,27 @@ public class ExportadorCSV {
         for (Playmobil p : lista) {
 
             writer.println(
-                    p.getReferencia() + ";" +
-                    p.getNombre() + ";" +
-                    p.getCategoria() + ";" +
+                    escapar(p.getReferencia()) + ";" +
+                    escapar(p.getNombre()) + ";" +
+                    escapar(p.getCategoria()) + ";" +
                     p.getPrecioCompra() + ";" +
                     p.getValorActual() + ";" +
-                    p.getObservaciones() + ";" +
-                    p.getRutaImagen()
+                    escapar(p.getObservaciones()) + ";" +
+                    escapar(p.getRutaImagen())
             	);
         	}
         }
+    }
+    private static String escapar(String valor) {
+
+        if (valor == null) {
+            return "";
+        }
+
+        return valor
+                .replace("\"", "\"\"")
+                .replace(";", "\";\"")
+                .replace("\n", " ")
+                .replace("\r", " ");
     }
 }

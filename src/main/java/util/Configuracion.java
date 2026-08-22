@@ -7,7 +7,11 @@ import java.util.Properties;
 
 public class Configuracion {
 
-    private static final String ARCHIVO = "config.properties";
+    private static final String ARCHIVO = "playmobil.properties";
+    
+    private static final String CARPETA_BACKUPS = "carpeta.backups";
+    private static final String CONFIRMAR_ELIMINAR = "confirmar.eliminar";
+    private static final String CONFIRMAR_RESTAURAR = "confirmar.restaurar";
 
     private static final Properties propiedades = new Properties();
 
@@ -25,15 +29,15 @@ public class Configuracion {
 
             // Si no existe todavía, utilizamos los valores por defecto.
             propiedades.setProperty(
-                    "carpeta.backups",
+            		CARPETA_BACKUPS,
                     "backups");
 
             propiedades.setProperty(
-                    "confirmar.eliminar",
+            		CONFIRMAR_ELIMINAR,
                     "true");
 
             propiedades.setProperty(
-                    "confirmar.restaurar",
+            		CONFIRMAR_RESTAURAR,
                     "true");
         }
     }
@@ -41,7 +45,7 @@ public class Configuracion {
     public static String getCarpetaBackups() {
 
         return propiedades.getProperty(
-                "carpeta.backups",
+        		CARPETA_BACKUPS,
                 "backups");
     }
 
@@ -49,7 +53,7 @@ public class Configuracion {
 
         return Boolean.parseBoolean(
                 propiedades.getProperty(
-                        "confirmar.eliminar",
+                		CONFIRMAR_ELIMINAR,
                         "true"));
     }
 
@@ -57,7 +61,7 @@ public class Configuracion {
 
         return Boolean.parseBoolean(
                 propiedades.getProperty(
-                        "confirmar.restaurar",
+                		CONFIRMAR_RESTAURAR,
                         "true"));
     }
 
@@ -68,15 +72,15 @@ public class Configuracion {
             throws IOException {
 
         propiedades.setProperty(
-                "carpeta.backups",
+        		CARPETA_BACKUPS,
                 carpetaBackups);
 
         propiedades.setProperty(
-                "confirmar.eliminar",
+        		CONFIRMAR_ELIMINAR,
                 String.valueOf(confirmarEliminar));
 
         propiedades.setProperty(
-                "confirmar.restaurar",
+        		CONFIRMAR_RESTAURAR,
                 String.valueOf(confirmarRestaurar));
 
         try (FileOutputStream fos =

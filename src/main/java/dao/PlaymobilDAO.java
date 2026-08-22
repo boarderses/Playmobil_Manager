@@ -267,15 +267,18 @@ public class PlaymobilDAO {
 
 	    return datos;
 	}
-	public void importar(List<Playmobil> lista) {
+	public int importar(List<Playmobil> lista) {
+	    int importados = 0;
 
 	    for (Playmobil p : lista) {
-
 	        if (!existeReferencia(p.getReferencia())) {
-
-	            insertar(p);	       
+	            if (insertar(p)) {
+	                importados++;
+	            }
 	        }
 	    }
+
+	    return importados;
 	}
 	public void reemplazarColeccion(List<Playmobil> lista)
 	        throws SQLException {

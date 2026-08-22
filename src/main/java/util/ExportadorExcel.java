@@ -2,6 +2,8 @@ package util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import model.Playmobil;
@@ -10,13 +12,23 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExportadorExcel {
+	
+	private static final String[] COLUMNAS = {
+            "Referencia",
+            "Nombre",
+            "Categoría",
+            "Precio Compra",
+            "Valor Actual",
+            "Observaciones"
+    };
 
     public static void exportar(List<Playmobil> lista,
                                 File archivo)  
-            throws Exception {
+            throws IOException {
     	
     	//Crear workbook y la hoja
-    	Workbook workbook = new XSSFWorkbook();
+    	try (Workbook workbook = new XSSFWorkbook();
+    		     FileOutputStream fos = new FileOutputStream(archivo)) {
 
     	Sheet hoja = workbook.createSheet("Colección");
     	
@@ -63,25 +75,16 @@ public class ExportadorExcel {
     	Cell fecha = filaFecha.createCell(0);
 
     	fecha.setCellValue("Fecha de exportación: "
-    	        + java.time.LocalDate.now());
+    	        + LocalDate.now());
     	
     	//Crea fila de cabecera
     	Row cabecera = hoja.createRow(2);
-    	
-    	//Crea columna
-    	String[] columnas = {
-    	        "Referencia",
-    	        "Nombre",
-    	        "Categoría",
-    	        "Precio Compra",
-    	        "Valor Actual",
-    	        "Observaciones"
-    	};
-    	for (int i = 0; i < columnas.length; i++) {
+
+    	for (int i = 0; i < COLUMNAS.length; i++) {
 
     	    Cell celda = cabecera.createCell(i);
 
-    	    celda.setCellValue(columnas[i]);
+    	    celda.setCellValue(COLUMNAS[i]);
 
     	    celda.setCellStyle(estiloCabecera);
     	}
@@ -96,6 +99,9 @@ public class ExportadorExcel {
     	
     	//Escribir playmobil
     	int fila = 3;
+    	
+    	double compraTotal = 0;
+        double valorTotal = 0;
 
     	for (Playmobil p : lista) {
 
@@ -113,25 +119,19 @@ public class ExportadorExcel {
     	    valor.setCellStyle(estiloMoneda);
     	    
     	    row.createCell(5).setCellValue(p.getObservaciones());
+    	    compraTotal += p.getPrecioCompra();
+            valorTotal += p.getValorActual();
     	}
-    	for (int i = 0; i < columnas.length; i++) {
+    	for (int i = 0; i < COLUMNAS.length; i++) {
     	    hoja.autoSizeColumn(i);
     	}
     	hoja.createFreezePane(0, 3);
     	
-    	//
+    	// Resumen
     	fila += 2;
 
     	Row resumen = hoja.createRow(fila++);
-    	resumen.createCell(0).setCellValue("Resumen");
-
-    	double compraTotal = 0;
-    	double valorTotal = 0;
-
-    	for (Playmobil p : lista) {
-    	    compraTotal += p.getPrecioCompra();
-    	    valorTotal += p.getValorActual();
-    	}
+    	resumen.createCell(0).setCellValue("Resumen");   
 
     	hoja.createRow(fila++)
     	        .createCell(0)
@@ -154,14 +154,8 @@ public class ExportadorExcel {
     	hoja.setColumnWidth(0, 6000);
     	
     	//Guardar el archivo
-    	FileOutputStream fos = new FileOutputStream(archivo);
 
     	workbook.write(fos);
-
-    	fos.close();
-
-    	workbook.close();
-
+    	}
     }
-
 }

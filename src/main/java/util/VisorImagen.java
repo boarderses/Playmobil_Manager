@@ -15,10 +15,24 @@ public class VisorImagen {
             return;
         }
 
+        File archivo = new File(rutaImagen);
+
+        if (!archivo.exists() || !archivo.isFile()) {
+            Alertas.error(
+                    "Imagen no disponible",
+                    "No se ha encontrado la imagen seleccionada.");
+            return;
+        }
+
         Image imagen = new Image(
-                new File(rutaImagen)
-                        .toURI()
-                        .toString());
+                archivo.toURI().toString());
+
+        if (imagen.isError()) {
+            Alertas.error(
+                    "Error",
+                    "No se ha podido cargar la imagen.");
+            return;
+        }
 
         ImageView imageView = new ImageView(imagen);
 
