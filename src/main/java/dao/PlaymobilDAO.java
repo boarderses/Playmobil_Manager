@@ -89,6 +89,20 @@ public class PlaymobilDAO {
 	        return false;
 	    }
 	}
+	public boolean eliminarPorReferencia(String referencia) {
+	    String sql = "DELETE FROM playmobil WHERE referencia = ?";
+
+	    try (Connection conn = ConexionDB.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setString(1, referencia);
+
+	        return stmt.executeUpdate() > 0;
+
+	    } catch (SQLException e) {
+	        return false;
+	    }
+	}
 	public List<Playmobil> obtenerTodos() {
 
 	    List<Playmobil> lista = new ArrayList<>();
