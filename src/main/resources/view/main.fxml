@@ -52,9 +52,24 @@
 		                    </content>
 		                </Tab>
 		                		<Tab closable="false" text="Estadísticas">
-		                    		<content>
-		                        		<PieChart fx:id="graficoCategorias" labelsVisible="true" legendVisible="true" />
-		                    		</content>
+		                    	<content>
+							        <VBox spacing="10" alignment="CENTER" fillWidth="true">
+							
+							            <PieChart fx:id="graficoCategorias"
+							                      labelsVisible="true"
+							                      legendVisible="true"
+							                      VBox.vgrow="ALWAYS" />
+							
+							            <Label text="Cantidad de Playmobil por categoría" />
+							
+							            <TextArea fx:id="txtResumenCategorias"
+							                      editable="false"
+							                      focusTraversable="false"
+							                      prefHeight="120"
+							                      wrapText="true" />
+							
+							        </VBox>
+							    </content>
 		                		</Tab>
 		            		</tabs>
 		        		</TabPane>

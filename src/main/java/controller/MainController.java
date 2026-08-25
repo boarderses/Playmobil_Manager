@@ -69,6 +69,7 @@ public class MainController {
     @FXML private Label lblCategorias;
     
     @FXML private PieChart graficoCategorias;
+    @FXML private TextArea txtResumenCategorias;
     
     
     private Playmobil playmobilSeleccionado;
@@ -409,17 +410,48 @@ public class MainController {
 
         ObservableList<PieChart.Data> datos =
                 FXCollections.observableArrayList();
+        
+        var categorias = dao.obtenerPlaymobilPorCategoria();
 
-        dao.obtenerPlaymobilPorCategoria()
-                .forEach((categoria, cantidad) ->
-                        datos.add(new PieChart.Data(categoria,cantidad)));
+        int total = categorias.values()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+        
+        if (total == 0) {
+            graficoCategorias.setData(datos);
+            txtResumenCategorias.setText("No hay Playmobil registrados.");
+            return;
+        }
+
+        StringBuilder resumen = new StringBuilder();
+
+        categorias.forEach((categoria, cantidad) -> {
+
+            double porcentaje = (cantidad * 100.0) / total;
+
+            datos.add(new PieChart.Data(
+                    categoria + " (" +
+                    String.format("%.1f", porcentaje) +
+                    "%)",
+                    cantidad));
+            
+            resumen.append(categoria)
+            .append(": ")
+            .append(cantidad)
+            .append(cantidad == 1 ? " unidad" : " unidades")
+            .append("\n");
+        });
 
         graficoCategorias.setData(datos);
         
         graficoCategorias.setTitle("Distribución por categorías");
         graficoCategorias.setLabelsVisible(true);
         graficoCategorias.setLegendVisible(true);
-        graficoCategorias.setClockwise(true);        
+        graficoCategorias.setClockwise(true); 
+        txtResumenCategorias.setText(resumen.toString());
+        
+        
     }
     @FXML
     private void exportarCSV() {

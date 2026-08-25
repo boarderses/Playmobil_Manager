@@ -26,3 +26,9 @@ replay_pid*
 
 # Configuración local con credenciales
 src/main/resources/config.properties
+
+# Configuración local
+playmobil.properties
+
+# Copias de seguridad generadas localmente
+pruebasCopias/
