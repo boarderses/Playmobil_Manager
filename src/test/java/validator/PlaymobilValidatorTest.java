@@ -66,9 +66,9 @@ public class PlaymobilValidatorTest {
 	@Test
 	void referenciaDemasiadoLarga() {
 
-	    playmobil.setReferencia("1234567890123456789012345678901");
+	    playmobil.setReferencia("123456789012345678901");
 
-	    assertEquals("La referencia no puede superar los 30 caracteres.",
+	    assertEquals("La referencia no puede superar los 20 caracteres.",
 	            PlaymobilValidator.validar(playmobil));
 	}
 	@Test

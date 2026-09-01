@@ -480,4 +480,4 @@ Este proyecto ha servido para poner en práctica y consolidar conocimientos rela
 
 Proyecto personal desarrollado para ampliar y demostrar conocimientos en **Java, JavaFX, MySQL, Maven, JDBC, testing y desarrollo de aplicaciones de escritorio**.
 
-El proyecto forma parte de mi portfolio como desarrollador de software junior.
+El proyecto forma parte de mi portafolio como desarrollador de software junior.
