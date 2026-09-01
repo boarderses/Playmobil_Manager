@@ -4,7 +4,7 @@ import model.Playmobil;
 
 public class PlaymobilValidator {
 	
-	private static final int MAX_REFERENCIA = 30;
+	private static final int MAX_REFERENCIA = 20;
 	private static final int MAX_NOMBRE = 100;
 	private static final int MAX_OBSERVACIONES = 500;
 	
@@ -32,7 +32,7 @@ public class PlaymobilValidator {
         }
         
         if (p.getReferencia().length() > MAX_REFERENCIA) {
-            return "La referencia no puede superar los 30 caracteres.";
+            return "La referencia no puede superar los 20 caracteres.";
         }
 
         if (p.getNombre() == null || p.getNombre().isBlank()) {
